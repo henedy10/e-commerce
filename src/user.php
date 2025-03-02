@@ -9,16 +9,20 @@ class User{
     }
 
     public function login($email,$password){
-        $sql = "SELECT *FROM account WHERE email ='$email'";
-        $result= mysqli_query($this->db->connect,$sql);
-        if($row=mysqli_fetch_assoc($result)){
-            if(password_verify($password,$row['password'])){
-                return "Login is successfull";
+        if(empty($email)||empty($password)){
+            return "Check that all input is not empty, please";
+        }else{
+            $sql = "SELECT *FROM account WHERE email ='$email'";
+            $result= mysqli_query($this->db->connect,$sql);
+            if($row=mysqli_fetch_assoc($result)){
+                if(password_verify($password,$row['password'])){
+                    return "Login is successfull";
+                } else {
+                    return "Your pass is invalid , check your info";
+                }
             } else {
-                return "Your pass is invalid , check your info";
+                return "This account is not exist";
             }
-        } else {
-            return "This account is not exist";
         }
 
     }
