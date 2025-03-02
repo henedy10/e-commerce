@@ -1,3 +1,11 @@
+<?php 
+include "user.php";
+$user = new User();
+if(isset($_POST['login'])){
+ header("location: index.php");
+}
+
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -596,33 +604,38 @@
             <p>Welcome back, customer!</p>
           </div>
 
-          <form class="mt-6 flex flex-col">
+          <form class="mt-6 flex flex-col" action="login.php" method="post">
             <label for="email">Email Address</label>
             <input
               class="mb-3 mt-3 border px-4 py-2"
               type="email"
+              name="email"
+              id="email"
               placeholder="youremail@domain.com"
             />
 
-            <label for="email">Password</label>
+            <label for="password">Password</label>
             <input
               class="mt-3 border px-4 py-2"
               type="password"
+              name="password"
+              id="password"
               placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
             />
           </form>
 
           <div class="mt-4 flex justify-between">
-            <form class="flex gap-2">
+            <form class="flex gap-2" action="login.php" method="post">
               <input type="checkbox" />
               <label for="checkbox">Remember me</label>
             </form>
             <a href="#" class="text-violet-900">Forgot password</a>
           </div>
-
-          <button class="my-5 w-full bg-violet-900 py-2 text-white">
-            LOGIN
-          </button>
+              <form action="login.php" method="post">
+                <button class="my-5 w-full bg-violet-900 hover:bg-violet-700 font-bold py-2 text-white rounded-lg" type="submit" name="login">
+                  LOGIN
+                </button>
+              </form>
 
           <p class="text-center text-gray-500">OR LOGIN WITH</p>
 
