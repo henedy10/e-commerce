@@ -13,12 +13,12 @@ class User{
         $result= mysqli_query($this->db->connect,$sql);
         if($row=mysqli_fetch_assoc($result)){
             if(password_verify($password,$row['password'])){
-                return "login is successfull";
+                return "Login is successfull";
             } else {
-                return "your pass is invalid , check your info";
+                return "Your pass is invalid , check your info";
             }
         } else {
-            return "this account is not exist";
+            return "This account is not exist";
         }
 
     }

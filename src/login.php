@@ -1,8 +1,9 @@
 <?php 
 include "user.php";
+$message="";
 $user = new User();
 if(isset($_POST['login'])){
- header("location: index.php");
+  $message = $user->login($_POST['email'],$_POST['password']);
 }
 
 ?>
@@ -602,6 +603,7 @@ if(isset($_POST['login'])){
           <div class="">
             <p class="text-4xl font-bold">LOGIN</p>
             <p>Welcome back, customer!</p>
+            <p class="text-red-500 font-bold bg-red-200 text-center"><?php echo $message ?></p>
           </div>
 
           <form class="mt-6 flex flex-col" action="login.php" method="post">
@@ -622,32 +624,30 @@ if(isset($_POST['login'])){
               id="password"
               placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
             />
-          </form>
 
           <div class="mt-4 flex justify-between">
-            <form class="flex gap-2" action="login.php" method="post">
-              <input type="checkbox" />
-              <label for="checkbox">Remember me</label>
-            </form>
+              <div>
+                <input type="checkbox" />
+                <label for="checkbox">Remember me</label>
+              </div>
             <a href="#" class="text-violet-900">Forgot password</a>
           </div>
-              <form action="login.php" method="post">
                 <button class="my-5 w-full bg-violet-900 hover:bg-violet-700 font-bold py-2 text-white rounded-lg" type="submit" name="login">
                   LOGIN
                 </button>
+                
+                <p class="text-center text-gray-500">OR LOGIN WITH</p>
+                
+                <div class="my-5 flex gap-2">
+                  <button class="w-1/2 bg-blue-800 py-2 text-white">FACEBOOK</button>
+                  <button class="w-1/2 bg-orange-500 py-2 text-white">GOOGLE</button>
+                </div>
+                
+                <p class="text-center">
+                  Don`t have account?
+                  <a href="sign-up.php" class="text-violet-900">Register now</a>
+                </p>
               </form>
-
-          <p class="text-center text-gray-500">OR LOGIN WITH</p>
-
-          <div class="my-5 flex gap-2">
-            <button class="w-1/2 bg-blue-800 py-2 text-white">FACEBOOK</button>
-            <button class="w-1/2 bg-orange-500 py-2 text-white">GOOGLE</button>
-          </div>
-
-          <p class="text-center">
-            Don`t have account?
-            <a href="sign-up.php" class="text-violet-900">Register now</a>
-          </p>
         </div>
       </section>
       <!-- /Login Card  -->
