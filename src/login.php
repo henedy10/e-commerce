@@ -614,6 +614,7 @@ if(isset($_POST['login'])){
               name="email"
               id="email"
               placeholder="youremail@domain.com"
+              value="<?php echo $user->email;?>"
             />
 
             <label for="password">Password</label>
@@ -622,7 +623,8 @@ if(isset($_POST['login'])){
               type="password"
               name="password"
               id="password"
-              placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
+              placeholder="Enter your password"
+              value="<?php echo $user->password;?>"
             />
 
           <div class="mt-4 flex justify-between">

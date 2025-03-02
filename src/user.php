@@ -1,6 +1,8 @@
 <?php 
 include "db.php";
 class User{
+    public $email;
+    public $password;
     private $db;
 
     function __construct()
@@ -9,6 +11,8 @@ class User{
     }
 
     public function login($email,$password){
+        $this -> email = $email;
+        $this -> password = $password;
         if(empty($email)||empty($password)){
             return "Check that all input is not empty, please";
         }else{
