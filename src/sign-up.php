@@ -661,7 +661,7 @@ if(isset($_POST['signup'])){
               </label>
           </div>
 
-          <button class="my-5 w-full bg-violet-900 py-2 text-white" type="submit" name="signup">
+          <button class="my-5 w-full bg-violet-900 hover:bg-violet-700 py-2 font-bold text-white rounded-lg cursor-pointer" type="submit" name="signup">
             CREATE ACCOUNT
           </button>
 

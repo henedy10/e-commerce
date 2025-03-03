@@ -634,7 +634,7 @@ if(isset($_POST['login'])){
               </div>
             <a href="#" class="text-violet-900">Forgot password</a>
           </div>
-                <button class="my-5 w-full bg-violet-900 hover:bg-violet-700 font-bold py-2 text-white rounded-lg" type="submit" name="login">
+                <button class="my-5 w-full bg-violet-900 hover:bg-violet-700 font-bold py-2 text-white rounded-lg cursor-pointer" type="submit" name="login">
                   LOGIN
                 </button>
                 
