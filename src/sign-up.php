@@ -1,3 +1,18 @@
+<?php 
+include "user.php";
+$message="";
+$user = new User();
+if(isset($_POST['signup'])){
+  $message = $user -> signup($_POST['name'],$_POST['email'],$_POST['password'],$_POST['confirmpass']);
+}
+
+
+
+
+
+
+
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -594,49 +609,59 @@
           <div class="">
             <p class="text-4xl font-bold">CREATE AN ACCOUNT</p>
             <p>Register for new customer</p>
+            <p class="text-red-500 font-bold bg-red-200 text-center"><?php echo $message; ?></p>
           </div>
 
-          <form class="mt-6 flex flex-col">
+          <form class="mt-6 flex flex-col" action="sign-up.php" method="post">
             <label for="name">Full Name</label>
             <input
               class="mb-3 mt-3 border px-4 py-2"
               type="text"
+              name="name"
+              id="name"
+              value="<?php echo $user-> name ?>"
               placeholder="Bogdan Bulakh"
-            />
-
-            <label class="mt-3" for="email">Email Address</label>
-            <input
+              />
+              
+              <label class="mt-3" for="email">Email Address</label>
+              <input
               class="mt-3 border px-4 py-2"
               type="email"
+              name="email"
+              id="email"
+              value="<?php echo $user-> email ?>"
               placeholder="user@mail.com"
-            />
-
-            <label class="mt-5" for="email">Password</label>
-            <input
+              />
+              
+              <label class="mt-5" for="password">Password</label>
+              <input
               class="mt-3 border px-4 py-2"
               type="password"
+              name="password"
+              id="password"
+              value="<?php echo $user-> password ?>"
+              placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
+              />
+              
+              <label class="mt-5" for="confirmpass">Confirm password</label>
+              <input
+              class="mt-3 border px-4 py-2"
+              type="password"
+              name="confirmpass"
+              id="confirmpass"
+              value="<?php echo $user-> confirmpass ?>"
               placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
             />
 
-            <label class="mt-5" for="email">Confirm password</label>
-            <input
-              class="mt-3 border px-4 py-2"
-              type="password"
-              placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
-            />
-          </form>
-
-          <div class="mt-4 flex justify-between">
-            <form class="flex gap-2">
+          <div class="mt-4">
               <input type="checkbox" />
               <label for="checkbox">
                 I have read and agree with
                 <a href="#" class="text-violet-900">terms &amp; conditions</a>
               </label>
-            </form>
           </div>
 
-          <button class="my-5 w-full bg-violet-900 py-2 text-white">
+          <button class="my-5 w-full bg-violet-900 py-2 text-white" type="submit" name="signup">
             CREATE ACCOUNT
           </button>
 
@@ -651,6 +676,7 @@
             Already have an account?
             <a href="login.php" class="text-violet-900">Login now</a>
           </p>
+          </form>
         </div>
       </section>
       <!-- /Register Card  -->
