@@ -22,7 +22,7 @@ class User{
             $result= mysqli_query($this->db->connect,$sql);
             if($row=mysqli_fetch_assoc($result)){
                 if(password_verify($password,$row['password'])){
-                    return "Login is successfull";
+                    header("location: index.php");
                 } else {
                     return "Your pass is invalid , check your info";
                 }
@@ -32,7 +32,7 @@ class User{
         }
     }
     
-    public function signup($name,$email,$password,$confirmpass){
+    public function signup($name,$email,$password,$confirmpass,$checkbox){
         $hashedpass = "";
         $this -> email = $email;
         $this -> name = $name;
@@ -40,7 +40,10 @@ class User{
         $this -> confirmpass = $confirmpass;
         if(empty($email)||empty($password)||empty($name)||empty($confirmpass)){
             return "Check that all input is not empty, please";
-        } else{
+        }elseif($checkbox==null){
+            return "You should agree with terms&condition,please";
+        }
+        else{
             $hashedpass= password_hash($password,PASSWORD_DEFAULT);
             if(!preg_match("/[a-zA-Z0-9' ]/",$name)){
                 return "Your username is Invalid";

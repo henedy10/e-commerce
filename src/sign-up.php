@@ -1,16 +1,11 @@
 <?php 
+
 include "user.php";
 $message="";
 $user = new User();
 if(isset($_POST['signup'])){
-  $message = $user -> signup($_POST['name'],$_POST['email'],$_POST['password'],$_POST['confirmpass']);
+  $message = $user -> signup($_POST['name'],$_POST['email'],$_POST['password'],$_POST['confirmpass'],isset($_POST['checkbox']));
 }
-
-
-
-
-
-
 
 ?>
 <!doctype html>
@@ -654,7 +649,7 @@ if(isset($_POST['signup'])){
             />
 
           <div class="mt-4">
-              <input type="checkbox" />
+              <input type="checkbox" name="checkbox" id="checkbox"/>
               <label for="checkbox">
                 I have read and agree with
                 <a href="#" class="text-violet-900">terms &amp; conditions</a>
