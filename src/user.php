@@ -3,6 +3,7 @@ include "db.php";
 class User{
     public $name;
     public $email;
+    public $message;
     public $password;
     public $confirmpass;
     private $db;
@@ -66,6 +67,34 @@ class User{
             }
         }
     }
+    
+    public function contact($name,$email,$catagory,$message,$checkbox){
+        $this -> email = $email;
+        $this -> name = $name;
+        $this -> message = $message;
+        if(empty($email)||empty($name)||empty($catagory)||empty($message)){
+            return "Check that all input is not empty, please";
+        }elseif($checkbox==null){
+            return "You should agree with terms&condition,please";
+        }else{
+            $sql = "SELECT *FROM account WHERE name='$name' AND email='$email' ";
+            $result= mysqli_query($this->db->connect,$sql);
+            if(mysqli_num_rows($result)<=0){
+                return "This account is not exist, you must have an account to send message ";
+            }else{
+                $sql="SELECT *FROM contact WHERE name='$name' AND email='$email'";
+                $result= mysqli_query($this->db->connect,$sql);
+                if(mysqli_num_rows($result)>0){
+                    return "You sent a message before ";
+                }else{
+                    $sql="INSERT INTO contact (name,email,catagory,message) VALUES ('$name','$email','$catagory','$message')";
+                    $result= mysqli_query($this->db->connect,$sql);
+                    if($result){
+                        return "Your message is sent successfully";
+                    }
+                }
+            }
+        }
 }
 
 
@@ -81,5 +110,5 @@ class User{
 
 
 
-
+}
 ?>

@@ -1,3 +1,15 @@
+<?php 
+include "user.php";
+$message="";
+$user = new User();
+if(isset($_POST['login'])){
+  $message = $user -> signup($_POST['name'],$_POST['email'],$_POST['password'],$_POST['confirmpass'],isset($_POST['checkbox']));
+}
+
+
+
+
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -853,7 +865,7 @@
             <div class="border py-5 shadow-md">
               <div class="flex justify-between px-4 pb-5">
                 <p class="font-bold">Shipping Address</p>
-                <a class="text-sm text-violet-900" href="manage-address.html"
+                <a class="text-sm text-violet-900" href="manage-address.php"
                   >Edit</a
                 >
               </div>

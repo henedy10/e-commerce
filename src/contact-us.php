@@ -1,3 +1,12 @@
+<?php
+include "user.php";
+$message="";
+$user = new User();
+if(isset($_POST['send'])){
+  $message= $user-> contact($_POST['username'],$_POST['email'],$_POST['pets'],$_POST['message'],isset($_POST['checkbox']));
+}
+
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -831,24 +840,29 @@
         <!-- Contact section  -->
 
         <section class="mx-auto my-5 text-center">
+          <p class="text-red-400 font-bold text-center">* You can send one message only</p>
           <h2 class="text-3xl font-bold">Have another question?</h2>
           <p>Complete the form below</p>
         </section>
 
         <!-- Form  -->
 
-        <form class="mx-auto my-5 max-w-[600px] px-5 pb-10" action="">
+        <form class="mx-auto my-5 max-w-[600px] px-5 pb-10" action="contact-us.php" method="post">
           <div class="mx-auto">
             <div class="my-3 flex w-full gap-2">
               <input
-                class="w-1/2 border px-4 py-2"
-                type="email"
-                placeholder="E-mail"
+              class="w-1/2 border px-4 py-2"
+              type="email"
+              name="email"
+              value="<?php echo $user-> email ?>"
+              placeholder="E-mail"
               />
               <input
-                class="w-1/2 border px-4 py-2"
-                type="text"
-                placeholder="Full Name"
+              class="w-1/2 border px-4 py-2"
+              type="text"
+              name="username"
+              value="<?php echo $user-> name ?>"
+              placeholder="Full Name"
               />
             </div>
           </div>
@@ -869,24 +883,24 @@
           <textarea
             class="w-full border px-4 py-2"
             placeholder="Write a commentary..."
-            name=""
-            id=""
-          ></textarea>
+            name="message"
+          ><?php echo $user-> message ?></textarea>
 
           <div
             class="lg:items:center container mt-4 flex flex-col justify-between lg:flex-row"
           >
             <div class="flex items-center">
-              <input class="mr-3" type="checkbox" />
+              <input class="mr-3" type="checkbox" name="checkbox" />
               <label for="checkbox">
                 I have read and agree with
                 <a href="#" class="text-violet-900">terms &amp; conditions</a>
               </label>
             </div>
-            <button class="my-3 bg-amber-400 px-4 py-2 lg:my-0">
+            <button class="my-3 bg-amber-400 px-4 py-2 lg:my-0 cursor-pointer hover:bg-amber-300" type="submit" name="send">
               Send Message
             </button>
           </div>
+          <p class="text-red-500 font-bold bg-red-200 text-center mt-3 "><?php echo $message; ?></p>
         </form>
 
         <!-- /Form  -->
