@@ -7,8 +7,10 @@ $sql="SELECT id FROM products";
 $result=mysqli_query($connect,$sql);
 $row=mysqli_num_rows($result);
 
-if(isset($_POST['add_to_cart'])){
-}
+  if(isset($_POST['add_to_cart'])){
+    echo $_POST['add_to_cart'];
+  }
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -1022,13 +1024,13 @@ if(isset($_POST['add_to_cart'])){
                 </div>
                 <form action="<?php $_SERVER["PHP_SELF"]?>" method="post">
                   <div>
-                    <button class="my-5 h-10 w-full font-bold bg-violet-900 hover:bg-violet-700 text-white rounded-lg cursor-pointer" type="submit" name="add_to_cart">
+                    <button class="my-5 h-10 w-full font-bold bg-violet-900 hover:bg-violet-700 text-white rounded-lg cursor-pointer" type="submit" name="add_to_cart" value="<?php echo $rows['id'] ?>">
                       Add to cart
                     </button>
                   </div>
                 </form>
+                </div>
               </div>
-            </div>
               <?php endfor; ?>
             </div>
           </section>
@@ -1150,3 +1152,4 @@ if(isset($_POST['add_to_cart'])){
     <script type="module" src="assets/js/script.js"></script>
   </body>
 </html>
+
