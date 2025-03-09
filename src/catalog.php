@@ -1017,7 +1017,7 @@ $row=mysqli_num_rows($result);
                   <p class="text-sm text-gray-400">(38)</p>
                 </div>
                 <div>
-                  <button class="my-5 h-10 w-full bg-violet-900 text-white" type="submit">
+                  <button class="my-5 h-10 w-full font-bold bg-violet-900 hover:bg-violet-700 text-white rounded-lg cursor-pointer" type="submit" name="add_to_cart">
                     Add to cart
                   </button>
                 </div>
