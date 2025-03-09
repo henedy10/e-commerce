@@ -1,8 +1,10 @@
 <?php 
+session_start();
 include "user.php";
 $message="";
 $user = new User();
 if(isset($_POST['login'])){
+  $_SESSION['email'] = $_POST['email'];
   $message = $user->login($_POST['email'],$_POST['password']);
 }
 

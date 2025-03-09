@@ -1,10 +1,14 @@
 <?php 
+session_start();
 include "db.php";
 $check=new DataBase();
 $connect = $check->connect;
 $sql="SELECT id FROM products";
 $result=mysqli_query($connect,$sql);
 $row=mysqli_num_rows($result);
+
+if(isset($_POST['add_to_cart'])){
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -1016,11 +1020,13 @@ $row=mysqli_num_rows($result);
                   </svg>
                   <p class="text-sm text-gray-400">(38)</p>
                 </div>
-                <div>
-                  <button class="my-5 h-10 w-full font-bold bg-violet-900 hover:bg-violet-700 text-white rounded-lg cursor-pointer" type="submit" name="add_to_cart">
-                    Add to cart
-                  </button>
-                </div>
+                <form action="<?php $_SERVER["PHP_SELF"]?>" method="post">
+                  <div>
+                    <button class="my-5 h-10 w-full font-bold bg-violet-900 hover:bg-violet-700 text-white rounded-lg cursor-pointer" type="submit" name="add_to_cart">
+                      Add to cart
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
               <?php endfor; ?>
