@@ -1,3 +1,13 @@
+<?php 
+$message ="";
+include "user.php";
+$user = new User();
+if(isset($_POST['update'])){
+  $message = $user ->change_password($_POST['email'],$_POST['current_pass'],$_POST['new_pass'],$_POST['repeat_new_pass']);
+}
+
+
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -804,9 +814,24 @@
         >
           <div class="py-5">
             <div class="w-full"></div>
-            <form class="flex w-full flex-col gap-3" action="">
+            <form class="flex w-full flex-col gap-3" action="change-password.php" method="post">
               <div class="flex w-full flex-col">
-                <label class="flex" for="name"
+                <label class="flex" for="email"
+                  >Your Email<span
+                    class="block text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 after:content-['*']"
+                  ></span
+                ></label>
+                <input
+                  class="w-full border px-4 py-2 lg:w-1/2"
+                  type="email"
+                  name="email"
+                  id="email"
+                  placeholder="Enter Your Email"
+                  value="<?php echo $user->email ?>"
+                />
+              </div>
+              <div class="flex w-full flex-col">
+                <label class="flex" for="password"
                   >Current password<span
                     class="block text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 after:content-['*']"
                   ></span
@@ -814,12 +839,15 @@
                 <input
                   class="w-full border px-4 py-2 lg:w-1/2"
                   type="password"
-                  placeholder=""
+                  name="current_pass"
+                  id="password"
+                  placeholder="Enter Current Password"
+                  value="<?php echo $user->password   ?>"
                 />
               </div>
 
               <div class="flex w-full flex-col">
-                <label class="flex" for="name"
+                <label class="flex" for="new_password"
                   >New Password<span
                     class="block text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 after:content-['*']"
                   ></span
@@ -827,12 +855,15 @@
                 <input
                   class="w-full border px-4 py-2 lg:w-1/2"
                   type="password"
-                  placeholder=""
+                  name="new_pass"
+                  id="new_password"
+                  placeholder="Enter Your New Password"
+                  value="<?php echo $user->new_pass ?>"
                 />
               </div>
 
               <div class="flex flex-col">
-                <label class="flex" for=""
+                <label class="flex" for="repeat_new_password"
                   >Repeat New Password<span
                     class="block text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 after:content-['*']"
                   ></span
@@ -840,14 +871,18 @@
                 <input
                   class="w-full border px-4 py-2 lg:w-1/2"
                   type="password"
-                  placeholder=""
+                  name="repeat_new_pass"
+                  id="repeat_new_password"
+                  placeholder="Repeat Your New Password"
+                  value="<?php echo $user->confirmpass ?>"
                 />
               </div>
 
-              <button class="mt-4 w-40 bg-violet-900 px-4 py-2 text-white">
+              <button class="mt-4 w-40 bg-violet-900 px-4 py-2 text-white" type="submit" name="update">
                 Save changes
               </button>
             </form>
+            <p class="text-red-500 font-bold bg-red-200 text-center mt-3"><?php echo $message ?></p>
           </div>
         </section>
         <!-- /form  -->

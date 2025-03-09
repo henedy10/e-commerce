@@ -5,6 +5,7 @@ class User{
     public $email;
     public $message;
     public $password;
+    public $new_pass;
     public $confirmpass;
     private $db;
 
@@ -95,9 +96,41 @@ class User{
                 }
             }
         }
-}
-
-
+    }
+    
+    public function change_password($email,$current_pass,$new_pass,$repeat_new_pass){
+        $hashedpass = "";
+        if(empty($email)||empty($current_pass)||empty($new_pass)||empty($repeat_new_pass)){
+            return "Check that all input is not empty, please";
+        }else{
+            $this -> email = $email;
+            $this -> password = $current_pass;
+            $this -> new_pass = $new_pass;
+            $this -> confirmpass = $repeat_new_pass;
+            $sql = "SELECT *FROM account WHERE email='$email' ";
+            $result= mysqli_query($this->db->connect,$sql);
+            if(mysqli_num_rows($result)<=0){
+                return "This account is not exist! ";
+            }else{
+                $row=mysqli_fetch_assoc($result);
+                
+                if(!password_verify($current_pass,$row['password'])){
+                    return "Your password is Incorrect, check your info!";
+                }else{
+                    if($new_pass!=$repeat_new_pass){
+                        return "There is an error , check your info again";
+                    }else{
+                        $hashedpass= password_hash($new_pass,PASSWORD_DEFAULT);
+                        $sql = "UPDATE account SET password='$hashedpass' WHERE email='$email'";
+                        $result= mysqli_query($this->db->connect,$sql);
+                        if($result){
+                            return "Your Update is done successfully";
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 
 
