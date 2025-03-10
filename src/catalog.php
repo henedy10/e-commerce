@@ -1,17 +1,33 @@
 <?php 
 session_start();
 include "db.php";
+$quantity=1 ;
+$total_price=0;
 $check=new DataBase();
 $connect = $check->connect;
 $sql="SELECT id FROM products";
 $result=mysqli_query($connect,$sql);
 $row=mysqli_num_rows($result);
+$email=$_SESSION['email'];
 
-  if(isset($_POST['add_to_cart'])){
-    echo $_POST['add_to_cart'];
+if(isset($_POST['add_to_cart'])){
+    $id = $_POST['add_to_cart'];
+
+    $sql_catalog = "SELECT *FROM products WHERE id='$id'";
+    $result_catalog = mysqli_query($connect,$sql_catalog);
+    $row_catalog = mysqli_fetch_assoc($result_catalog);
+
+    $price_catalog = $row_catalog['new_price'];
+    $image_catalog = $row_catalog['image'];
+    $name_catalog = $row_catalog['name'];
+    $total_price = $price_catalog * $quantity;
+
+    $sql_cart="INSERT INTO cart (id,email,quantity,price,total_price,image,name) 
+                            VALUES('$id','$email','$quantity','$price_catalog','$total_price','$image_catalog','$name_catalog')";
+    $result_cart = mysqli_query($connect,$sql_cart);
   }
-
-?>
+    
+    ?>
 <!doctype html>
 <html lang="en">
   <head>
