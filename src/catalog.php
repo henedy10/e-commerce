@@ -22,8 +22,9 @@ if(isset($_POST['add_to_cart'])){
     $name_catalog = $row_catalog['name'];
     $total_price = $price_catalog * $quantity;
 
-    $sql_cart="INSERT INTO cart (id,email,quantity,price,total_price,image,name) 
-                            VALUES('$id','$email','$quantity','$price_catalog','$total_price','$image_catalog','$name_catalog')";
+    $sql_cart="INSERT INTO cart (email,quantity,price,total_price,image,name) 
+                            VALUES('$email','$quantity','$price_catalog',
+                                  '$total_price','$image_catalog','$name_catalog')";
     $result_cart = mysqli_query($connect,$sql_cart);
   }
     

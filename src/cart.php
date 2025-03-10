@@ -1,3 +1,16 @@
+<?php 
+session_start();
+include "db.php";
+$check=new DataBase();
+$connect = $check->connect;
+$email = $_SESSION['email'];
+$sql="SELECT *FROM cart WHERE email='$email'";
+$result=mysqli_query($connect,$sql);
+$nums_row=mysqli_num_rows($result);
+
+
+
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -883,22 +896,24 @@
             </thead>
             <tbody>
               <!-- 1 -->
-
+            <?php for($i=0;$i<$nums_row;$i++):
+                  $rows=mysqli_fetch_assoc($result);
+            ?>
               <tr class="h-[100px] border-b">
                 <td class="align-middle">
                   <div class="flex">
                     <img
                       class="w-[90px]"
-                      src="./assets/images/bedroom.png"
+                      src="<?php echo $rows['image']?>"
                       alt="bedroom image"
                     />
                     <div class="ml-3 flex flex-col justify-center">
-                      <p class="text-xl font-bold">ITALIAN BED</p>
+                      <p class="text-xl font-bold"><?php echo $rows['name']?></p>
                       <p class="text-sm text-gray-400">Size: XL</p>
                     </div>
                   </div>
                 </td>
-                <td class="mx-auto text-center">&#36;320</td>
+                <td class="mx-auto text-center">&#36;<?php echo $rows['price']?></td>
                 <td class="align-middle">
                   <div class="flex items-center justify-center">
                     <button
@@ -918,7 +933,7 @@
                     </button>
                   </div>
                 </td>
-                <td class="mx-auto text-center">&#36;320</td>
+                <td class="mx-auto text-center">&#36;<?php echo $rows['total_price']?></td>
                 <td class="align-middle">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -934,9 +949,9 @@
                   </svg>
                 </td>
               </tr>
-
+            <?php endfor; ?>
               <!-- 2 -->
-
+<!-- 
               <tr class="h-[100px] border-b">
                 <td class="align-middle">
                   <div class="flex">
@@ -986,10 +1001,10 @@
                     />
                   </svg>
                 </td>
-              </tr>
+              </tr> -->
 
               <!-- 3 -->
-
+<!-- 
               <tr class="h-[100px] border-b">
                 <td class="align-middle">
                   <div class="flex">
@@ -1039,10 +1054,10 @@
                     />
                   </svg>
                 </td>
-              </tr>
+              </tr> -->
 
               <!-- 4 -->
-
+<!-- 
               <tr class="h-[100px]">
                 <td class="align-middle">
                   <div class="flex">
@@ -1092,7 +1107,7 @@
                     />
                   </svg>
                 </td>
-              </tr>
+              </tr> -->
             </tbody>
           </table>
         </section>
