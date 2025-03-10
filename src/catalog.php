@@ -9,7 +9,7 @@ $connect = $check->connect;
 $sql="SELECT id FROM products";
 $result=mysqli_query($connect,$sql);
 $row=mysqli_num_rows($result);
-$email=$_SESSION['email'];
+$email=isset($_SESSION['email']) ? $_SESSION['email']:null;
 
 if(isset($_POST['add_to_cart'])){
     $id = $_POST['add_to_cart'];

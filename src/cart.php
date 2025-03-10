@@ -3,13 +3,10 @@ session_start();
 include "db.php";
 $check=new DataBase();
 $connect = $check->connect;
-$email = $_SESSION['email'];
+$email=isset($_SESSION['email']) ? $_SESSION['email']:null;
 $sql="SELECT *FROM cart WHERE email='$email'";
 $result=mysqli_query($connect,$sql);
 $nums_row=mysqli_num_rows($result);
-
-
-
 ?>
 <!doctype html>
 <html lang="en">
