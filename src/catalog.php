@@ -30,7 +30,7 @@ if(isset($_POST['add_to_cart'])){
     $result_cart = mysqli_query($connect,$sql_cart);
     
     if(mysqli_num_rows($result_cart)>0){
-      $message="It product is added before already";
+      $message="This product is added before already";
     }else{
       $sql_cart="INSERT INTO cart (email,quantity,price,total_price,image,name) 
                               VALUES('$email','$quantity','$price_catalog',
