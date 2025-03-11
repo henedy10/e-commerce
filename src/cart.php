@@ -4,9 +4,17 @@ include "db.php";
 $check=new DataBase();
 $connect = $check->connect;
 $email=isset($_SESSION['email']) ? $_SESSION['email']:null;
+
+if(isset($_POST['delete'])){
+  $image=$_POST['delete'];
+  $sql_delete="DELETE FROM cart WHERE image='$image'";
+  $result_delete = mysqli_query($connect,$sql_delete);
+}
+
 $sql="SELECT *FROM cart WHERE email='$email'";
 $result=mysqli_query($connect,$sql);
 $nums_row=mysqli_num_rows($result);
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -945,7 +953,7 @@ $nums_row=mysqli_num_rows($result);
                             clip-rule="evenodd"
                             />
                             </svg>
-                            <input type="submit" name="delete" value="Delete" class="cursor-pointer text-red-600">
+                            <button class="text-red-500 cursor-pointer" type="submit" name="delete" value="<?php echo $rows['image']?>">Delete</button>
                           </div>
                         </form>
                       </td>
@@ -1106,3 +1114,7 @@ $nums_row=mysqli_num_rows($result);
     <script type="module" src="assets/js/script.js"></script>
   </body>
 </html>
+<?php
+
+
+?>
