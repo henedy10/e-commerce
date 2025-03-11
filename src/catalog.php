@@ -26,13 +26,21 @@ if(isset($_POST['add_to_cart'])){
     $name_catalog = $row_catalog['name'];
     $total_price = $price_catalog * $quantity;
 
-    $sql_cart="INSERT INTO cart (email,quantity,price,total_price,image,name) 
-                            VALUES('$email','$quantity','$price_catalog',
-                                  '$total_price','$image_catalog','$name_catalog')";
+    $sql_cart="SELECT image FROM cart WHERE image='$image_catalog'";
     $result_cart = mysqli_query($connect,$sql_cart);
-    if($result_cart){
-      $message="Addition to your cart is done successfully";
+    
+    if(mysqli_num_rows($result_cart)>0){
+      $message="It product is added before already";
+    }else{
+      $sql_cart="INSERT INTO cart (email,quantity,price,total_price,image,name) 
+                              VALUES('$email','$quantity','$price_catalog',
+                                    '$total_price','$image_catalog','$name_catalog')";
+      $result_cart = mysqli_query($connect,$sql_cart);
+      if($result_cart){
+        $message="Addition to your cart is done successfully";
+      }
     }
+
   }
 }
 ?>
