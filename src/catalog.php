@@ -12,6 +12,9 @@ $row=mysqli_num_rows($result);
 $email=isset($_SESSION['email']) ? $_SESSION['email']:null;
 
 if(isset($_POST['add_to_cart'])){
+  if($email==null){
+    $message="You should log in first!";
+  }else{
     $id = $_POST['add_to_cart'];
 
     $sql_catalog = "SELECT *FROM products WHERE id='$id'";
@@ -31,8 +34,8 @@ if(isset($_POST['add_to_cart'])){
       $message="Addition to your cart is done successfully";
     }
   }
-    
-    ?>
+}
+?>
 <!doctype html>
 <html lang="en">
   <head>
