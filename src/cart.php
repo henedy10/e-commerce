@@ -1,6 +1,7 @@
 <?php 
 session_start();
 include "db.php";
+$total_price=0;
 $check=new DataBase();
 $connect = $check->connect;
 $email=isset($_SESSION['email']) ? $_SESSION['email']:null;
@@ -938,6 +939,7 @@ $nums_row=mysqli_num_rows($result);
                         </div>
                       </td>
                       <td class="mx-auto text-center">&#36;<?php echo $rows['total_price']?></td>
+                      <?php $total_price+= $rows['total_price'];?>
                       <td class="align-middle">
                         <form action="<?php echo $_SERVER['PHP_SELF']?>" method="post">
                           <div class="flex justify-around">
@@ -973,7 +975,7 @@ $nums_row=mysqli_num_rows($result);
 
               <div class="flex justify-between border-b py-5">
                 <p>Subtotal</p>
-                <p>$1280</p>
+                <p><?php echo "$". $total_price; ?></p>
               </div>
 
               <div class="flex justify-between border-b py-5">
@@ -983,7 +985,7 @@ $nums_row=mysqli_num_rows($result);
 
               <div class="flex justify-between py-5">
                 <p>Total</p>
-                <p>$1280</p>
+                <p><?php echo "$".$total_price; ?></p>
               </div>
 
               <a href="checkout-address.php">

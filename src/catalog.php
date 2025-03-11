@@ -13,7 +13,7 @@ $email=isset($_SESSION['email']) ? $_SESSION['email']:null;
 
 if(isset($_POST['add_to_cart'])){
   if($email==null){
-    $message="You should log in first!";
+    $message="You should log in first Or create an account!";
   }else{
     $id = $_POST['add_to_cart'];
 
@@ -26,7 +26,7 @@ if(isset($_POST['add_to_cart'])){
     $name_catalog = $row_catalog['name'];
     $total_price = $price_catalog * $quantity;
 
-    $sql_cart="SELECT image FROM cart WHERE image='$image_catalog'";
+    $sql_cart="SELECT image FROM cart WHERE image='$image_catalog' AND email='$email'";
     $result_cart = mysqli_query($connect,$sql_cart);
     
     if(mysqli_num_rows($result_cart)>0){
@@ -37,7 +37,7 @@ if(isset($_POST['add_to_cart'])){
                                     '$total_price','$image_catalog','$name_catalog')";
       $result_cart = mysqli_query($connect,$sql_cart);
       if($result_cart){
-        $message="Addition to your cart is done successfully";
+        $message = "Addition to your cart is done successfully";
       }
     }
 
