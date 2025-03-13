@@ -1,5 +1,4 @@
 <?php 
-session_start();
 include "user.php";
 $message="";
 $user = new User();

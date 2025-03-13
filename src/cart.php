@@ -939,7 +939,9 @@ $nums_row=mysqli_num_rows($result);
                         </div>
                       </td>
                       <td class="mx-auto text-center">&#36;<?php echo $rows['total_price']?></td>
+
                       <?php $total_price+= $rows['total_price'];?>
+
                       <td class="align-middle">
                         <form action="<?php echo $_SERVER['PHP_SELF']?>" method="post">
                           <div class="flex justify-around">

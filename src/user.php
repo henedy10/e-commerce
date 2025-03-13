@@ -1,4 +1,5 @@
 <?php 
+session_start();
 include "db.php";
 class User{
     public $name;
@@ -99,9 +100,14 @@ class User{
     }
     
     public function change_password($email,$current_pass,$new_pass,$repeat_new_pass){
+
         $hashedpass = "";
+        $checkemail=isset($_SESSION['email']) ? $_SESSION['email'] : null;
+
         if(empty($email)||empty($current_pass)||empty($new_pass)||empty($repeat_new_pass)){
             return "Check that all input is not empty, please";
+        }elseif($checkemail==null){
+            return "You should log in first";
         }else{
             $this -> email = $email;
             $this -> password = $current_pass;
