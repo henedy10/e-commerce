@@ -5,7 +5,7 @@ $user = new User();
 if(isset($_POST['update'])){
   $message = $user ->change_password($_POST['email'],$_POST['current_pass'],$_POST['new_pass'],$_POST['repeat_new_pass']);
 }
-$checkname=isset($_SESSION['name'])? $_SESSION['name']:"Your name";
+$checkname=$user -> checkname();
 
 ?>
 <!doctype html>

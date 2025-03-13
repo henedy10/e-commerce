@@ -139,16 +139,11 @@ class User{
         }
     }
 
+    public function checkname() {
 
-
-
-
-
-
-
-
-
-
-
+        $checkname=isset($_SESSION['name'])? $_SESSION['name']:"Your name";
+        return $checkname;
+        
+    }
 }
 ?>

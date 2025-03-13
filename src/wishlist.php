@@ -2,7 +2,7 @@
 include "user.php";
 $message ="";
 $user = new User();
-$checkname=isset($_SESSION['name'])? $_SESSION['name']:"Your name";
+$checkname=$user -> checkname();
 ?>
 <!doctype html>
 <html lang="en">

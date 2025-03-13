@@ -5,7 +5,7 @@ $user = new User();
 // if(isset($_POST['login'])){
 //   $message = $user -> signup($_POST['name'],$_POST['email'],$_POST['password'],$_POST['confirmpass'],isset($_POST['checkbox']));
 // }
-$checkname=isset($_SESSION['name'])? $_SESSION['name']:"Your name";
+$checkname=$user -> checkname();
 ?>
 <!doctype html>
 <html lang="en">
