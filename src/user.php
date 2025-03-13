@@ -25,6 +25,7 @@ class User{
             $result= mysqli_query($this->db->connect,$sql);
             if($row=mysqli_fetch_assoc($result)){
                 if(password_verify($password,$row['password'])){
+                    $_SESSION['name']=$row['name'];
                     header("location: index.php");
                 } else {
                     return "Your pass is invalid , check your info";

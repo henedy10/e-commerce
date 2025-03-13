@@ -5,7 +5,7 @@ $user = new User();
 if(isset($_POST['update'])){
   $message = $user ->change_password($_POST['email'],$_POST['current_pass'],$_POST['new_pass'],$_POST['repeat_new_pass']);
 }
-
+$checkname=isset($_SESSION['name'])? $_SESSION['name']:"Your name";
 
 ?>
 <!doctype html>
@@ -644,7 +644,7 @@ if(isset($_POST['update'])){
               />
               <div class="ml-5">
                 <p class="font-medium text-gray-500">Hello,</p>
-                <p class="font-bold">Sarah Johnson</p>
+                <p class="font-bold"><?php echo $checkname ?></p>
               </div>
             </div>
           </div>

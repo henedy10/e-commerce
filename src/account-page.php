@@ -2,13 +2,10 @@
 include "user.php";
 $message="";
 $user = new User();
-if(isset($_POST['login'])){
-  $message = $user -> signup($_POST['name'],$_POST['email'],$_POST['password'],$_POST['confirmpass'],isset($_POST['checkbox']));
-}
-
-
-
-
+// if(isset($_POST['login'])){
+//   $message = $user -> signup($_POST['name'],$_POST['email'],$_POST['password'],$_POST['confirmpass'],isset($_POST['checkbox']));
+// }
+$checkname=isset($_SESSION['name'])? $_SESSION['name']:"Your name";
 ?>
 <!doctype html>
 <html lang="en">
@@ -646,7 +643,7 @@ if(isset($_POST['login'])){
               />
               <div class="ml-5">
                 <p class="font-medium text-gray-500">Hello,</p>
-                <p class="font-bold">Sarah Johnson</p>
+                <p class="font-bold"><?php echo $checkname ?></p>
               </div>
             </div>
           </div>
