@@ -1027,6 +1027,6 @@ $checkname=$user -> checkname();
       </section>
       <!-- /Payment and copyright  -->
     </main>
-    <script type="module" src="assets/js/script.js"></script>
+    <script type="module" src="./assets/js/script.js"></script>
   </body>
 </html>

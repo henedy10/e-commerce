@@ -4,8 +4,9 @@ $message="";
 $user = new User();
 $checkname=$user -> checkname();
 if(isset($_POST['save'])){
-
+$message = $user->info($_POST['image'],$_POST['first_name'],$_POST['last_name'],$_POST['bio']);
 }
+echo $message;
 ?>
 <!doctype html>
 <html lang="en">
@@ -1001,6 +1002,6 @@ if(isset($_POST['save'])){
       </section>
     </main>
     <!-- /Payment and copyright  -->
-    <script type="module" src="assets/js/script.js"></script>
+    <script type="module" src="./assets/js/script.js"></script>
   </body>
 </html>

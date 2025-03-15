@@ -138,11 +138,36 @@ class User{
             }
         }
     }
-
-    public function checkname() {
-
+    
+    public function checkname(){
         $checkname=isset($_SESSION['name'])? $_SESSION['name']:"Your name";
+        
         return $checkname;
+    }
+    
+    public function info($image,$first_name,$last_name,$bio){
+        $checkemail= $this->email;
+        if(empty($first_name)||empty($last_name)||empty($bio)){
+            return "Check that all input is not empty, please";
+        }else{
+            if(!preg_match('/^[a-zA-Z0-9]*$/',$first_name)){
+                return"Your first-name is Invalid";
+            }elseif(!preg_match('/^[a-zA-Z0-9]*$/',$last_name)){
+                return"Your last-name is Invalid";
+            }else{
+                $sql="UPDATE account SET first_name='$first_name' 
+                AND last_name ='$last_name' 
+                AND image='$image' 
+                AND bio='$bio' where email ='$checkemail'";
+                
+                $result= mysqli_query($this->db->connect,$sql);
+                if(mysqli_num_rows($result)<=0){
+                    return "you should login first";
+                }else{
+                    return "your changes is saved successfully";
+                }
+            }
+        }
         
     }
 }
