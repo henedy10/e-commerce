@@ -813,9 +813,9 @@ $checkname=$user -> checkname();
         >
           <div class="py-5">
             <div class="w-full"></div>
-            <form class="flex w-full flex-col gap-3" action="">
+            <form class="flex w-full flex-col gap-3" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
               <div class="flex w-full flex-col">
-                <label class="flex" for="name"
+                <label class="flex" for="country"
                   >Country<span
                     class="block text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 after:content-['*']"
                   ></span
@@ -823,12 +823,14 @@ $checkname=$user -> checkname();
                 <input
                   class="w-full border px-4 py-2 lg:w-1/2"
                   type="text"
-                  placeholder="Serbia"
+                  name="country"
+                  id="country"
+                  placeholder="Your Country"
                 />
               </div>
 
               <div class="flex w-full flex-col">
-                <label class="flex" for="name"
+                <label class="flex" for="city"
                   >City<span
                     class="block text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 after:content-['*']"
                   ></span
@@ -836,20 +838,25 @@ $checkname=$user -> checkname();
                 <input
                   class="w-full border px-4 py-2 lg:w-1/2"
                   type="text"
-                  placeholder="Belgrade"
+                  name="city"
+                  id="city"
+                  placeholder="Your City"
                 />
               </div>
 
               <div class="flex flex-col">
-                <label for="">Zip Code</label>
+                <label for="zip-code">Zip Code</label>
                 <input
                   x-mask="999999"
                   class="w-full border px-4 py-2 lg:w-1/2"
-                  placeholder="240116"
+                  type="text"
+                  name="zip-code"
+                  id="zip-code"
+                  placeholder="Your Zip Code"
                 />
               </div>
 
-              <button class="mt-4 w-40 bg-violet-900 px-4 py-2 text-white">
+              <button class="mt-4 w-40 bg-violet-900 hover:bg-violet-700 px-4 py-2 text-white cursor-pointer rounded-lg">
                 Save changes
               </button>
             </form>

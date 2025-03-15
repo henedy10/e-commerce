@@ -3,6 +3,9 @@ include "user.php";
 $message="";
 $user = new User();
 $checkname=$user -> checkname();
+if(isset($_POST['save'])){
+
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -813,30 +816,29 @@ $checkname=$user -> checkname();
               <h2>Avatar image</h2>
               <div
                 class="mx-auto mb-5 flex flex-row items-center bg-neutral-100 py-5 lg:mx-0 lg:w-1/2"
-              >
+                >
                 <img
-                  class="ml-5 h-20 w-20 rounded-full"
-                  src="./assets/images/avatar-photo.png"
-                  alt="Sarah Johnson image"
+                class="ml-5 h-20 w-20 rounded-full"
+                src="./assets/images/avatar-photo.png"
+                alt="Sarah Johnson image"
                 />
-
-                <form>
+                
+                <form class="flex w-full flex-col gap-3" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
                   <div>
                     <label class="block">
                       <span class="sr-only">Choose profile photo</span>
                       <input
                         type="file"
+                        name="image"
                         class="mx-auto ml-5 flex w-full justify-center border-yellow-400 text-sm outline-none file:mr-4 file:bg-amber-400 file:py-2 file:px-4 file:text-sm file:font-semibold"
                       />
                     </label>
                   </div>
-                </form>
               </div>
             </div>
 
-            <form class="flex w-full flex-col gap-3" action="">
               <div class="flex w-full flex-col">
-                <label class="flex" for="name"
+                <label class="flex" for="first name"
                   >First Name<span
                     class="block text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 after:content-['*']"
                   ></span
@@ -844,36 +846,40 @@ $checkname=$user -> checkname();
                 <input
                   class="w-full border px-4 py-2 lg:w-1/2"
                   type="text"
-                  placeholder="Sarah"
+                  name="first name"
+                  id="first name"
+                  placeholder="First Name"
                 />
               </div>
 
               <div class="flex w-full flex-col">
-                <label class="flex" for="name"
+                <label class="flex" for="last name"
                   >Last Name<span
                     class="block text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 after:content-['*']"
                   ></span
                 ></label>
                 <input
-                  class="w-full border px-4 py-2 lg:w-1/2"
+                  class="w-full border px-4 py-2 lg:w-1/2 "
                   type="text"
-                  placeholder="Johnson"
+                  name="last name"
+                  id="last name"
+                  placeholder="Last Name"
                 />
               </div>
 
               <div class="flex flex-col">
-                <label for="">Bio</label>
+                <label for="Bio">Bio</label>
                 <textarea
                   class="w-full border px-4 py-2 text-gray-500 outline-none lg:w-1/2"
-                  name=""
-                  id=""
+                  name="bio"
+                  id="Bio"
                   cols="30"
                   rows="10"
                 >
   CEO, MayBell Inc.</textarea
                 >
 
-                <button class="mt-4 w-40 bg-violet-900 px-4 py-2 text-white">
+                <button class="mt-4 w-40 bg-violet-900 hover:bg-violet-700 px-4 py-2 text-white cursor-pointer rounded-lg" type="save" name="save">
                   Save changes
                 </button>
               </div>
