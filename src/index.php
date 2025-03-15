@@ -2655,6 +2655,6 @@
       </div>
     </section>
     <!-- /Payment and copyright  -->
-    <script type="module" src="assets/js/script.js"></script>
+    <script type="module" src="./assets/js/script.js"></script>
   </body>
 </html>
