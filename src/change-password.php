@@ -602,7 +602,7 @@ $checkname=$user -> checkname();
         <nav class="mx-auto w-full mt-4 max-w-[1200px] px-5">
           <ul class="flex items-center">
             <li class="cursor-pointer">
-              <a href="index.html">
+              <a href="index.php">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"

@@ -2,9 +2,6 @@
 include "user.php";
 $message="";
 $user = new User();
-// if(isset($_POST['login'])){
-//   $message = $user -> signup($_POST['name'],$_POST['email'],$_POST['password'],$_POST['confirmpass'],isset($_POST['checkbox']));
-// }
 $checkname=$user -> checkname();
 ?>
 <!doctype html>

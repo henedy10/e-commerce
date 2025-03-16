@@ -1,8 +1,21 @@
 <?php 
 include "user.php";
+$connect= new DataBase();
+$checkemail= isset($_SESSION['email'])? $_SESSION['email']:null;
 $message="";
+
 $user = new User();
 $checkname=$user -> checkname();
+
+if(isset($_POST['save'])){
+  $message=$user->address($_POST['country'],$_POST['city'],$_POST['zip-code']);
+}
+
+if($checkemail!=null){
+  $sql="SELECT country,city,zip_code FROM account WHERE email='$checkemail'";
+  $result=mysqli_query($connect->connect,$sql);
+  $row=mysqli_fetch_assoc($result);
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -601,7 +614,7 @@ $checkname=$user -> checkname();
         <nav class="mx-auto w-full mt-4 max-w-[1200px] px-5">
           <ul class="flex items-center">
             <li class="cursor-pointer">
-              <a href="index.html">
+              <a href="index.php">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -825,6 +838,10 @@ $checkname=$user -> checkname();
                   type="text"
                   name="country"
                   id="country"
+                  value="<?php
+                    if($checkemail!=null)
+                    echo $row['country']
+                  ?>"
                   placeholder="Your Country"
                 />
               </div>
@@ -840,6 +857,10 @@ $checkname=$user -> checkname();
                   type="text"
                   name="city"
                   id="city"
+                  value="<?php
+                    if($checkemail!=null)
+                    echo $row['city']; 
+                  ?>"
                   placeholder="Your City"
                 />
               </div>
@@ -852,13 +873,22 @@ $checkname=$user -> checkname();
                   type="text"
                   name="zip-code"
                   id="zip-code"
+                  value="<?php
+                    if($checkemail!=null)
+                    echo $row['zip_code'];
+                  ?>"
                   placeholder="Your Zip Code"
                 />
               </div>
 
-              <button class="mt-4 w-40 bg-violet-900 hover:bg-violet-700 px-4 py-2 text-white cursor-pointer rounded-lg">
+              <button 
+              class="mt-4 w-40 bg-violet-900 hover:bg-violet-700 px-4 py-2 text-white cursor-pointer rounded-lg" 
+              type="submit"
+              name="save"
+              >
                 Save changes
               </button>
+              <span class=" mt-5 bg-green-500 font-bold text-center"><?php echo $message ?></span>
             </form>
           </div>
         </section>

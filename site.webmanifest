@@ -1,6 +1,7 @@
 {
-    "name": "",
-    "short_name": "",
+    "name": "My Website",
+    "short_name": "Website",
+    "start_url": "/",
     "icons": [
         {
             "src": "/android-chrome-96x96.png",

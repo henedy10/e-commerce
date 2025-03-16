@@ -102,9 +102,9 @@ class User{
     
     public function change_password($email,$current_pass,$new_pass,$repeat_new_pass){
 
-        $hashedpass = "";
         $checkemail=isset($_SESSION['email']) ? $_SESSION['email'] : null;
-
+        $hashedpass = "";
+        
         if(empty($email)||empty($current_pass)||empty($new_pass)||empty($repeat_new_pass)){
             return "Check that all input is not empty, please";
         }elseif($checkemail==null){
@@ -146,7 +146,7 @@ class User{
     }
     
     public function info($image,$first_name,$last_name,$bio){
-        $checkemail= $this->email;
+        $checkemail= isset($_SESSION['email'])? $_SESSION['email']:null;
         if(empty($first_name)||empty($last_name)||empty($bio)){
             return "Check that all input is not empty, please";
         }else{
@@ -155,20 +155,43 @@ class User{
             }elseif(!preg_match('/^[a-zA-Z0-9]*$/',$last_name)){
                 return"Your last-name is Invalid";
             }else{
-                $sql="UPDATE account SET first_name='$first_name' 
-                AND last_name ='$last_name' 
-                AND image='$image' 
-                AND bio='$bio' where email ='$checkemail'";
-                
-                $result= mysqli_query($this->db->connect,$sql);
-                if(mysqli_num_rows($result)<=0){
+                if($checkemail==null){
                     return "you should login first";
                 }else{
-                    return "your changes is saved successfully";
+                    $sql="UPDATE account SET first_name='$first_name' 
+                    , last_name ='$last_name' 
+                    , image='$image' 
+                    , bio='$bio' WHERE email ='$checkemail'";
+                    
+                    $result= mysqli_query($this->db->connect,$sql);
+                    if($result){
+                        return "your changes is saved successfully";
+                    }
                 }
             }
         }
         
+    }
+    
+    public function address($country,$city,$zip_code){
+        if(empty($country)||empty($city)||empty($zip_code)){
+            return "Check that all input is not empty, please";
+        }else{
+            $checkemail=isset($_SESSION['email']) ? $_SESSION['email'] : null;
+            if($checkemail==null){
+                return "You should log in first!";
+            }else{
+
+                $sql="UPDATE account SET country='$country' 
+                , city ='$city' 
+                , zip_code='$zip_code' WHERE email ='$checkemail'";
+                
+                $result= mysqli_query($this->db->connect,$sql);
+                if($result){
+                    return "your changes is saved successfully";
+                }
+            }
+        }
     }
 }
 ?>

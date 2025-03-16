@@ -1,12 +1,22 @@
 <?php 
 include "user.php";
+$connect= new DataBase();
+$checkemail= isset($_SESSION['email'])? $_SESSION['email']:null;
 $message="";
+
 $user = new User();
 $checkname=$user -> checkname();
+
 if(isset($_POST['save'])){
-$message = $user->info($_POST['image'],$_POST['first_name'],$_POST['last_name'],$_POST['bio']);
+  $message = $user->info($_POST['image'],$_POST['first_name'],$_POST['last_name'],$_POST['bio']);
 }
-echo $message;
+
+if($checkemail!=null){
+  $sql="SELECT first_name,last_name,bio FROM account WHERE email='$checkemail'";
+  $result=mysqli_query($connect->connect,$sql);
+  $row=mysqli_fetch_assoc($result);
+}
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -821,7 +831,7 @@ echo $message;
                 <img
                 class="ml-5 h-20 w-20 rounded-full"
                 src="./assets/images/avatar-photo.png"
-                alt="Sarah Johnson image"
+                alt="Your Image"
                 />
                 
                 <form class="flex w-full flex-col gap-3" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
@@ -849,6 +859,10 @@ echo $message;
                   type="text"
                   name="first name"
                   id="first name"
+                  value="<?php
+                    if($checkemail!=null)
+                    echo $row['first_name']
+                  ?>"
                   placeholder="First Name"
                 />
               </div>
@@ -864,6 +878,10 @@ echo $message;
                   type="text"
                   name="last name"
                   id="last name"
+                  value="<?php 
+                  if($checkemail!=null)
+                  echo $row['last_name'];
+                  ?>"
                   placeholder="Last Name"
                 />
               </div>
@@ -876,13 +894,16 @@ echo $message;
                   id="Bio"
                   cols="30"
                   rows="10"
-                >
-  CEO, MayBell Inc.</textarea
-                >
+                  placeholder="Write Your Bio...."
+                ><?php
+                  if($checkemail!=null)
+                  echo $row['bio'];
+                  ?></textarea>
 
                 <button class="mt-4 w-40 bg-violet-900 hover:bg-violet-700 px-4 py-2 text-white cursor-pointer rounded-lg" type="save" name="save">
                   Save changes
                 </button>
+                <span class=" mt-5 bg-green-500 font-bold text-center"><?php echo $message ?></span>
               </div>
             </form>
           </div>
