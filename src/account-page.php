@@ -1,8 +1,15 @@
 <?php 
 include "user.php";
+$checkemail= isset($_SESSION['email'])? $_SESSION['email']:null;
+
 $message="";
 $user = new User();
 $checkname=$user -> checkname();
+
+$connect= new DataBase();
+$sql="SELECT *FROM account WHERE email='$checkemail'";
+$result=mysqli_query($connect->connect,$sql);
+$row=mysqli_fetch_assoc($result);
 ?>
 <!doctype html>
 <html lang="en">
@@ -845,13 +852,20 @@ $checkname=$user -> checkname();
                   >Edit</a
                 >
               </div>
-
-              <div class="px-4">
-                <p>Sarah Johnson</p>
-                <p>sarah@yandex.com</p>
-                <p>20371</p>
-                <p class="">1223 3432 3344 0082</p>
-              </div>
+              <?php if($checkemail!=null){ ?>
+                <div class="px-4">
+                  <p><?php echo $row['first_name']." ".$row['last_name'] ?></p>
+                  <p><?php echo $row['email'] ?></p>
+                  <p><?php echo $row['zip_code'] ?></p>
+                </div>
+                <?php }else{ ?>
+                  <div class="px-4">
+                    <p class="font-bold text-red-600">
+                      oh no,there is no info about you <br>
+                      you should log in first or creat an account
+                    </p>
+                  </div>
+                <?php } ?>
             </div>
           </div>
 
@@ -863,13 +877,20 @@ $checkname=$user -> checkname();
                   >Edit</a
                 >
               </div>
-
+              <?php if($checkemail!=null){ ?>
               <div class="px-4">
-                <p>Sarah Johnson</p>
-                <p>Belgrade, Serbia</p>
-                <p>20371</p>
-                <p>1223 3432 3344 0082</p>
+                <p><?php echo $row['first_name']." ".$row['last_name'] ?></p>
+                <p><?php echo $row['country'].",".$row['city'] ?></p>
+                <p><?php echo $row['zip_code'] ?></p>
               </div>
+              <?php }else{ ?>
+                <div class="px-4">
+                    <p class="font-bold text-red-600">
+                      oh no,there is no info about you <br>
+                      you should log in first or creat an account
+                    </p>
+                </div>
+              <?php } ?>
             </div>
           </div>
 
@@ -877,15 +898,22 @@ $checkname=$user -> checkname();
             <div class="border py-5 shadow-md">
               <div class="flex justify-between px-4 pb-5">
                 <p class="font-bold">Billing Address</p>
-                <a class="text-sm text-violet-900" href="#">Edit</a>
+                <!-- <a class="text-sm text-violet-900" href="#">Edit</a> -->
               </div>
-
+              <?php if($checkemail!=null){ ?>
               <div class="px-4">
-                <p>Sarah Johnson</p>
-                <p>Belgrade, Serbia</p>
-                <p>20371</p>
-                <p>1223 3432 3344 0082</p>
+                <p><?php echo $row['first_name']." ".$row['last_name'] ?></p>
+                <p><?php echo $row['country'].",".$row['city'] ?></p>
+                <p><?php echo $row['zip_code'] ?></p>
               </div>
+              <?php }else{ ?>
+                <div class="px-4">
+                    <p class="font-bold text-red-600">
+                      oh no,there is no info about you <br>
+                      you should log in first or creat an account
+                    </p>
+                </div>
+              <?php } ?>
             </div>
           </div>
         </section>
