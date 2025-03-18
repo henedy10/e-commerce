@@ -1,8 +1,64 @@
 <?php 
 include "user.php";
+$quantity=1 ;
+$total_price=0;
 $message ="";
 $user = new User();
 $checkname=$user -> checkname();
+
+$check=new DataBase();
+$connect = $check->connect;
+$email=isset($_SESSION['email']) ? $_SESSION['email']:null;
+
+// DELETE FROM wishlist
+
+if(isset($_POST['delete'])){
+  $name=$_POST['delete'];
+  $sql_delete="DELETE FROM wishlist WHERE name='$name'";
+  $result_delete = mysqli_query($connect,$sql_delete);
+}
+
+//END DELETE FROM wishlist
+
+//ADD TO cart
+
+if(isset($_POST['add_to_cart'])){
+
+  $name=$_POST['add_to_cart'];
+  $sql_cart="SELECT name FROM cart WHERE name='$name' AND email='$email'";
+  $result_cart=mysqli_query($connect,$sql_cart);
+
+  if(mysqli_num_rows($result_cart)>0){
+    $message="It exist in your cart already";
+  }else{
+    
+    $sql_product="SELECT *FROM products WHERE name='$name'";
+    $result_product=mysqli_query($connect,$sql_product);
+    $product_info=mysqli_fetch_assoc($result_product);
+    
+    $price_catalog = $product_info['new_price'];
+    $image_catalog = $product_info['image'];
+    $name_catalog = $product_info['name'];
+    $total_price = $price_catalog * $quantity;
+    
+    if($product_info){
+      
+      $sql_cart="INSERT INTO cart (email,quantity,price,total_price,image,name)
+                              VALUES ('$email','$quantity','$price_catalog','$total_price','$image_catalog','$name_catalog')";
+      $result_cart=mysqli_query($connect,$sql_cart);
+      if($result_cart){
+          $sql_delete="DELETE FROM wishlist WHERE name='$name'";
+          $result_delete=mysqli_query($connect,$sql_delete);
+      }
+    }
+  }
+}
+
+//END ADD TO cart 
+
+$sql="SELECT *FROM wishlist WHERE email='$email'";
+$result=mysqli_query($connect,$sql);
+$nums_row=mysqli_num_rows($result);
 ?>
 <!doctype html>
 <html lang="en">
@@ -1130,10 +1186,13 @@ $checkname=$user -> checkname();
         <!-- /Mobile product cards  -->
 
         <!-- Desktop product cards  -->
+         <?php if($nums_row>0){?>
         <section
           class="hidden w-full max-w-[1200px] grid-cols-1 gap-8 px-5 pb-10 md:grid"
         >
-          <!-- 1 -->
+        
+          <?php for($i=0;$i<$nums_row;$i++): ?>
+            <?php $rows=mysqli_fetch_assoc($result);?>
           <div
             class="flex w-full flex-row h-44 items-center justify-between border py-5 px-4"
           >
@@ -1141,12 +1200,12 @@ $checkname=$user -> checkname();
               <img
                 width="100px"
                 class="object-cover"
-                src="./assets/images/kitchen.png"
+                src="<?php echo $rows['image']?>"
                 alt="Kitchen image"
               />
 
               <div class="flex w-2/5 flex-col justify-center">
-                <p class="text-xl font-bold">ITALIAN KITCHEN</p>
+                <p class="text-xl font-bold"><?php echo $rows['name']?></p>
                 <p class="text-gray-500">
                   Availability:
                   <span class="font-medium text-green-600">In Stock</span>
@@ -1155,171 +1214,53 @@ $checkname=$user -> checkname();
             </div>
 
             <div class="flex w-3/5 items-center justify-between flex-row">
-              <p class="mt-2 text-xl font-bold text-violet-900">$320.00</p>
-
-              <div class="mt-2 flex items-center">
-                <button class="w-full px-2 bg-amber-400 py-2 lg:px-5">
-                  Add to cart
-                </button>
-
-                <i class="ml-5 cursor-pointer"
-                  ><svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    class="h-6 w-6"
+              <p class="mt-2 text-xl font-bold text-violet-900"><?php echo "$".$rows['price']?></p>
+              <form action="<?php echo $_SERVER['PHP_SELF']?>" method="POST">
+                <div class="mt-2 flex items-center">
+                  <button 
+                  class="w-full px-2 bg-amber-400 hover:bg-amber-300 py-2 lg:px-5"
+                  type="submit"
+                  name="add_to_cart"
+                  value="<?php echo $rows['name'] ?>"
                   >
-                    <path
-                      fill-rule="evenodd"
-                      d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
-                </i>
-              </div>
+                    Add to cart
+                  </button>
+                  <button
+                  class="mx-3 mb-5 "
+                  type="submit"
+                  name="delete"
+                  value="<?php echo $rows['name'] ?>"
+                  >
+                    <i class="ml-5 cursor-pointer"
+                      ><svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        class="h-6 w-6"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                    </i>
+                  </button>
+
+                </div>
+              </form>
             </div>
           </div>
-
-          <div
-            class="flex w-full h-44 flex-row items-center justify-between border py-5 px-4"
-          >
-            <div class="flex w-full items-center gap-4">
-              <img
-                width="100px"
-                class="object-cover"
-                src="./assets/images/bedroom.png"
-                alt="Bedroom image"
-              />
-
-              <div class="flex flex-col justify-center">
-                <p class="text-xl font-bold">QUEEN SIZE BED</p>
-                <p class="text-gray-500">
-                  Availability:
-                  <span class="font-medium text-green-600">In Stock</span>
-                </p>
-              </div>
-            </div>
-
-            <div class="flex w-3/5 items-center justify-between flex-row">
-              <p class="mt-2 text-xl font-bold text-violet-900">$320.00</p>
-
-              <div class="mt-2 flex items-center">
-                <button class="w-full px-2 bg-amber-400 py-2 lg:px-5">
-                  Add to cart
-                </button>
-
-                <i class="ml-5 cursor-pointer"
-                  ><svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    class="h-6 w-6"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
-                </i>
-              </div>
-            </div>
-          </div>
-
-          <div
-            class="flex w-full h-44 flex-row items-center justify-between border py-5 px-4"
-          >
-            <div class="flex w-full items-center gap-4">
-              <img
-                width="100px"
-                class="object-cover"
-                src="./assets/images/living-room.png"
-                alt="Sofa image"
-              />
-
-              <div class="flex flex-col justify-center">
-                <p class="text-xl font-bold">LARGE SOFA</p>
-                <p class="text-gray-500">
-                  Availability:
-                  <span class="font-medium text-green-600">In Stock</span>
-                </p>
-              </div>
-            </div>
-
-            <div class="flex w-3/5 items-center justify-between flex-row">
-              <p class="mt-2 text-xl font-bold text-violet-900">$320.00</p>
-
-              <div class="mt-2 flex items-center">
-                <button class="w-full px-2 bg-amber-400 py-2 lg:px-5">
-                  Add to cart
-                </button>
-
-                <i class="ml-5 cursor-pointer"
-                  ><svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    class="h-6 w-6"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
-                </i>
-              </div>
-            </div>
-          </div>
-
-          <div
-            class="flex w-full h-44 flex-row items-center justify-between border py-5 px-4"
-          >
-            <div class="flex w-full items-center gap-4">
-              <img
-                width="100px"
-                class="object-cover"
-                src="./assets/images/product-chair.png"
-                alt="Chair image"
-              />
-
-              <div class="flex flex-col justify-center">
-                <p class="text-xl font-bold">CHAIR PURPLE</p>
-                <p class="text-gray-500">
-                  Availability:
-                  <span class="font-medium text-red-600">Out of Stock</span>
-                </p>
-              </div>
-            </div>
-
-            <div class="flex w-3/5 items-center justify-between flex-row">
-              <p class="mt-2 text-xl font-bold text-violet-900">$320.00</p>
-
-              <div class="mt-2 flex items-center">
-                <button class="w-full px-2 bg-amber-400 py-2 lg:px-5">
-                  Add to cart
-                </button>
-
-                <i class="ml-5 cursor-pointer"
-                  ><svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    class="h-6 w-6"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
-                </i>
-              </div>
-            </div>
-          </div>
+          <?php endfor; ?>
         </section>
         <!-- /Desktop product cards  -->
+        <?php }else{ ?>
+          <div class="text-red-700 font-bold ">
+            *There is no product you preferred 
+          </div>
+        <?php } ?> 
       </section>
+      <span class=" text-red-700 font-bold text-center bg-rose-300 "><?php echo $message ?></span>
 
       <!-- Desktop Footer  -->
 

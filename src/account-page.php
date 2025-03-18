@@ -10,6 +10,11 @@ $connect= new DataBase();
 $sql="SELECT *FROM account WHERE email='$checkemail'";
 $result=mysqli_query($connect->connect,$sql);
 $row=mysqli_fetch_assoc($result);
+
+if(isset($_POST['log_out'])){
+  session_destroy();
+  header("location:index.php");
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -784,27 +789,30 @@ $row=mysqli_fetch_assoc($result);
           <div class="flex py-5">
             <div class="flex w-full">
               <div class="flex flex-col gap-2">
-                <a
-                  href="#"
-                  class="flex items-center gap-2 font-medium active:text-violet-900"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="h-5 w-5"
+                <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+                  <button
+                    class="flex items-center gap-2 font-medium active:text-violet-900 cursor-pointer"
+                    type="submit"
+                    name="log_out"
                   >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
-                    />
-                  </svg>
-
-                  Log Out</a
-                >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="h-5 w-5"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
+                      />
+                    </svg>
+  
+                    Log Out</button
+                  >
+                </form>
               </div>
             </div>
           </div>
