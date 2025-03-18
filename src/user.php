@@ -193,5 +193,10 @@ class User{
             }
         }
     }
+
+    public function logout(){
+            session_destroy();
+            header("location:index.php");
+    }
 }
 ?>

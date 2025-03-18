@@ -14,9 +14,9 @@ $row=mysqli_fetch_assoc($result);
 // log out
 
 if(isset($_POST['log_out'])){
-  session_destroy();
-  header("location:index.php");
+  $user->logout();
 }
+
 ?>
 <!doctype html>
 <html lang="en">

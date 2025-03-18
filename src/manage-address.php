@@ -20,8 +20,7 @@ if($checkemail!=null){
 // log out
 
 if(isset($_POST['log_out'])){
-  session_destroy();
-  header("location:index.php");
+  $user->logout();
 }
 ?>
 <!doctype html>

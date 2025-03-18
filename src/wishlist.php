@@ -23,7 +23,7 @@ if(isset($_POST['delete'])){
 //ADD TO cart
 
 if(isset($_POST['add_to_cart'])){
-
+  
   $name=$_POST['add_to_cart'];
   $sql_cart="SELECT name FROM cart WHERE name='$name' AND email='$email'";
   $result_cart=mysqli_query($connect,$sql_cart);
@@ -47,8 +47,8 @@ if(isset($_POST['add_to_cart'])){
                               VALUES ('$email','$quantity','$price_catalog','$total_price','$image_catalog','$name_catalog')";
       $result_cart=mysqli_query($connect,$sql_cart);
       if($result_cart){
-          $sql_delete="DELETE FROM wishlist WHERE name='$name'";
-          $result_delete=mysqli_query($connect,$sql_delete);
+        $sql_delete="DELETE FROM wishlist WHERE name='$name'";
+        $result_delete=mysqli_query($connect,$sql_delete);
       }
     }
   }
@@ -59,9 +59,10 @@ if(isset($_POST['add_to_cart'])){
 // log out
 
 if(isset($_POST['log_out'])){
-  session_destroy();
-  header("location:index.php");
+  $user->logout();
 }
+
+
 
 $sql="SELECT *FROM wishlist WHERE email='$email'";
 $result=mysqli_query($connect,$sql);
