@@ -11,6 +11,8 @@ $sql="SELECT *FROM account WHERE email='$checkemail'";
 $result=mysqli_query($connect->connect,$sql);
 $row=mysqli_fetch_assoc($result);
 
+// log out
+
 if(isset($_POST['log_out'])){
   session_destroy();
   header("location:index.php");
