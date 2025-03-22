@@ -181,7 +181,7 @@ class User{
             if($checkemail==null){
                 return "You should log in first!";
             }else{
-
+                
                 $sql="UPDATE account SET country='$country' 
                 , city ='$city' 
                 , zip_code='$zip_code' WHERE email ='$checkemail'";
@@ -193,10 +193,64 @@ class User{
             }
         }
     }
-
+    
     public function logout(){
-            session_destroy();
-            header("location:index.php");
+        session_destroy();
+        header("location:index.php");
+    }
+    
+    
+    public function add_payment($card_num,$card_holder,$month,$year,$pass){
+        $checkemail= isset($_SESSION['email'])? $_SESSION['email']:null;
+        if(empty($card_num)||empty($card_holder)||empty($month)||empty($year)||empty($pass)){
+            return "Check that all input is not empty, please";
+        }else{
+            if(!preg_match("/^[0-9]{16}$/",$card_num)){
+                return "Your card number is Invalid, check your number again,please!";
+            }else if(!preg_match("/^[a-zA-Z']*$/",$card_holder)){
+                return "Only letters and white space allowed,Check Your name";
+            }else if(!preg_match("/^[0-9]{3}$/",$pass)){
+                return "CVV/CVC Must be 3 numbers";
+            }else{
+                if($checkemail==null){
+                    return "You Should Login First";
+                }else{
+                    $sql="SELECT *FROM payment WHERE card_num='$card_num'";
+                    $result= mysqli_query($this->db->connect,$sql);
+                    if($result){
+                    }else{
+                        $hashedpass=password_hash($pass,PASSWORD_DEFAULT);
+                        $sql="INSERT INTO payment (email,card_num,name,month,year,password) 
+                                            VALUES ('$checkemail','$card_num','$card_holder','$month','$year','$hashedpass')";
+                        $result= mysqli_query($this->db->connect,$sql);
+                        if($result){
+                            return "your changes is saved successfully";
+                        }
+                    }
+                }
+            }
+            return "This card is exist already!";
+        }
+    }
+    
+    public function save_payment($card_num,$card_holder,$month,$year,$pass){
+        if(empty($card_num)||empty($card_holder)||empty($month)||empty($year)||empty($pass)){
+            return "Check that all input is not empty, please";
+        }else{
+            $checkemail= isset($_SESSION['email'])? $_SESSION['email']:null;
+            $sql="UPDATE payment SET 
+                card_num='$card_num',
+                name='$card_holder',
+                month='$month',
+                year='$year',
+                password='$pass'
+                WHERE email='$checkemail'";
+            $result= mysqli_query($this->db->connect,$sql);
+            if($result){
+                return"your change is record successfully";
+            }
+        }
+        
     }
 }
 ?>

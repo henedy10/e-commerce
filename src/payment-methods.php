@@ -3,6 +3,27 @@ include "user.php";
 $message="";
 $user = new User();
 $checkname=$user -> checkname();
+$checkemail= isset($_SESSION['email'])? $_SESSION['email']:null;
+
+// Add a new card 
+
+if(isset($_POST['Add'])){
+  $message=$user->add_payment($_POST['card_num'],$_POST['card_holder'],$_POST['month'],$_POST['year'],$_POST['password']);
+}
+
+// TO SAVE CHANGES 
+
+if(isset($_POST['Save'])){
+  $message=$user->save_payment($_POST['card_num'],$_POST['card_holder'],$_POST['month'],$_POST['year'],$_POST['password']);
+}
+
+$connect= new DataBase();
+
+if($checkemail!=null){
+  $sql="SELECT *FROM payment WHERE email='$checkemail'";
+  $result=mysqli_query($connect->connect,$sql);
+  $row=mysqli_fetch_assoc($result);
+}
 
 // log out
 
@@ -822,65 +843,94 @@ if(isset($_POST['log_out'])){
           class="grid w-full max-w-[1200px] grid-cols-1 gap-3 px-5 pb-10"
         >
           <div class="py-5">
-            <div class="w-full"></div>
-            <form class="flex w-full flex-col gap-3" action="">
+            <div class="w-full mb-4 bg-red-300 text-red-700 text-center font-bold">
+              <?php echo $message ?>
+            </div>
+            <form class="flex w-full flex-col gap-3" action="<?php echo $_SERVER['PHP_SELF']?>" method="POST">
               <div class="flex w-full flex-col">
-                <label class="flex" for="name">Payment Card Number</label>
+                <label class="flex" for="card num">Payment Card Number</label>
                 <input
                   x-mask="9999 9999 9999 9999"
                   class="w-full border px-4 py-2 lg:w-1/2"
                   type="text"
+                  id="card num"
+                  name="card_num"
                   placeholder="1223 4568 7644 4839"
+                  value="<?php echo $row['card_num'] ?>"
                 />
               </div>
 
               <div class="flex w-full flex-col">
-                <label class="flex" for="name">Card Holder</label>
+                <label class="flex" for="holder">Card Holder</label>
                 <input
                   class="w-full border px-4 py-2 lg:w-1/2"
                   type="text"
-                  placeholder="SARAH JOHNSON"
+                  id="holder"
+                  name="card_holder"
+                  placeholder="YOUR NAME"
+                  value="<?php echo $row['name'] ?>"
                 />
               </div>
 
               <div class="flex items-center gap-5 lg:w-1/2">
                 <div class="flex flex-col">
-                  <label class="flex" for="name">Expiry Date</label>
+                  <label class="flex" for="expiry date">Expiry Date</label>
 
                   <div class="flex w-[150px] items-center gap-1">
                     <input
                       x-mask="99"
                       class="w-1/2 border px-4 py-2 text-center"
+                      id="expiry date"
+                      type="number"
+                      min="1"
+                      max="12"
+                      name="month"
                       placeholder="10"
-                    />
-
-                    <span>&bsol;</span>
-
+                      value="<?php echo $row['month'] ?>"
+                      />
+                      
+                      <span>&bsol;</span>
+                      
                     <input
                       x-mask="99"
                       class="w-1/2 border px-4 py-2 text-center"
+                      type="number"
+                      min="25"
+                      name="year"
                       placeholder="36"
+                      value="<?php echo $row['year'] ?>"
                     />
                   </div>
                 </div>
 
                 <div class="flex flex-col w-[60px] lg:w-[110px]">
-                  <label class="flex" for="">CVV/CVC</label>
+                  <label class="flex" for="password">CVV/CVC</label>
                   <input
                     x-mask="999"
                     class="w-full border py-2 text-center lg:w-1/2"
                     type="password"
+                    name="password"
+                    id="password"
                     placeholder="&bull;&bull;&bull;"
+                    value="<?php echo $row['password'] ?>"
                   />
                 </div>
               </div>
 
               <div class="flex gap-3">
-                <button class="mt-4 w-40 bg-violet-900 px-4 py-2 text-white">
+                <button 
+                class="mt-4 w-40 bg-violet-900 px-4 py-2 text-white hover:bg-violet-700 cursor-pointer rounded-lg"
+                type="submit"
+                name="Save"
+                >
                   Save changes
                 </button>
 
-                <button class="mt-4 w-40 bg-amber-400 px-4 py-2">
+                <button 
+                class="mt-4 w-40 bg-amber-400 px-4 py-2 hover:bg-amber-300 cursor-pointer rounded-lg"
+                type="submit"
+                name="Add"
+                >
                   Add new card
                 </button>
               </div>
