@@ -856,7 +856,10 @@ if(isset($_POST['log_out'])){
                   id="card num"
                   name="card_num"
                   placeholder="1223 4568 7644 4839"
-                  value="<?php echo $row['card_num'] ?>"
+                  value="<?php
+                    if($checkemail!=null)
+                    echo $row['card_num'] 
+                    ?>"
                 />
               </div>
 
@@ -868,7 +871,10 @@ if(isset($_POST['log_out'])){
                   id="holder"
                   name="card_holder"
                   placeholder="YOUR NAME"
-                  value="<?php echo $row['name'] ?>"
+                  value="<?php 
+                    if($checkemail!=null)
+                    echo $row['name'] 
+                  ?>"
                 />
               </div>
 
@@ -912,7 +918,10 @@ if(isset($_POST['log_out'])){
                     name="password"
                     id="password"
                     placeholder="&bull;&bull;&bull;"
-                    value="<?php echo $row['password'] ?>"
+                    value="<?php
+                        if($checkemail!=null)
+                        echo $row['password'] 
+                      ?>"
                   />
                 </div>
               </div>
