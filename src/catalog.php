@@ -11,6 +11,13 @@ $result=mysqli_query($connect,$sql);
 $row=mysqli_num_rows($result);
 $email=isset($_SESSION['email']) ? $_SESSION['email']:null;
 
+// info about product
+
+if(isset($_POST['info_product'])){
+  $_SESSION['id_product']=$_POST['info_product'];
+  header("location: product-overview.php");
+}
+
 // ADD TO CART 
 
 if(isset($_POST['add_to_cart'])){
@@ -49,7 +56,7 @@ if(isset($_POST['add_to_cart'])){
 
 // ADD OF WISHLIST
 
-if(isset($_POST['wishlist'])){
+elseif(isset($_POST['wishlist'])){
   
   if($email==null){
     $message="You should log in first Or create an account!";
@@ -986,31 +993,29 @@ if(isset($_POST['wishlist'])){
                 <div
                 class="absolute flex h-full w-full items-center justify-center gap-3 opacity-0 duration-150 hover:opacity-100"
                 >
-                <a
-                href="product-overview.php"
-                class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-amber-400"
-                >
-                <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                      stroke="currentColor"
-                      class="h-4 w-4"
-                      >
-                      <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                      />
-                    </svg>
-                  </a>
-
-                  <!-- ********************************* -->
-
-                    <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
-                      <button type="submit" name="wishlist" value="<?php  echo $rows['id']?>">
-                        <span
+                <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
+                  <button type="submit" name="info_product" value="<?php  echo $rows['id']?>">
+                    <a
+                    class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-amber-400"
+                    >
+                    <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                          stroke="currentColor"
+                          class="h-4 w-4"
+                          >
+                          <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                          />
+                        </svg>
+                      </a>
+                  </button>
+                  <button type="submit" name="wishlist" value="<?php  echo $rows['id']?>">
+                    <span
                         class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-amber-400"
                         >
                           <svg
@@ -1026,10 +1031,6 @@ if(isset($_POST['wishlist'])){
                         </span>
                       </button>
                     </form>
-
-                  <!-- ************************************* -->
-
-
                 </div>
                 <div
                   class="absolute right-1 mt-3 flex items-center justify-center bg-amber-400"

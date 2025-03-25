@@ -1,3 +1,90 @@
+<?php
+session_start();
+$id=$_SESSION['id_product'];
+include "db.php";
+$quantity=1 ;
+$total_price=0;
+$check=new DataBase();
+$connect = $check->connect;
+
+$sql="SELECT *FROM products WHERE id ='$id'";
+$result=mysqli_query($connect,$sql);
+$row=mysqli_fetch_assoc($result);
+$message="";
+
+$email=isset($_SESSION['email']) ? $_SESSION['email']:null;
+
+
+// ADD TO CART 
+
+if(isset($_POST['add_to_cart'])){
+  if($email==null){
+    $message="You should log in first Or create an account!";
+  }else{
+    $id = $_POST['add_to_cart'];
+
+    $sql_catalog = "SELECT *FROM products WHERE id='$id'";
+    $result_catalog = mysqli_query($connect,$sql_catalog);
+    $row_catalog = mysqli_fetch_assoc($result_catalog);
+
+    $price_catalog = $row_catalog['new_price'];
+    $image_catalog = $row_catalog['image'];
+    $name_catalog = $row_catalog['name'];
+    $total_price = $price_catalog * $quantity;
+
+    $sql_cart="SELECT image FROM cart WHERE image='$image_catalog' AND email='$email'";
+    $result_cart = mysqli_query($connect,$sql_cart);
+    
+    if(mysqli_num_rows($result_cart)>0){
+      $message="This product is added before already";
+    }else{
+      $sql_cart="INSERT INTO cart (email,quantity,price,total_price,image,name) 
+                              VALUES('$email','$quantity','$price_catalog',
+                                    '$total_price','$image_catalog','$name_catalog')";
+      $result_cart = mysqli_query($connect,$sql_cart);
+      if($result_cart){
+        $message = "Addition to your cart is done successfully";
+      }
+    }
+  }
+}
+// END OF ADD OF CART
+
+// ADD OF WISHLIST
+
+elseif(isset($_POST['add_to_wishlist'])){
+  
+  if($email==null){
+    $message="You should log in first Or create an account!";
+  }else{
+    $id = $_POST['add_to_wishlist'];
+  
+    $sql_catalog = "SELECT name,new_price,image FROM products WHERE id='$id'";
+    $result_catalog = mysqli_query($connect,$sql_catalog);
+    $row_catalog = mysqli_fetch_assoc($result_catalog);
+  
+    $price_catalog = $row_catalog['new_price'];
+    $image_catalog = $row_catalog['image'];
+    $name_catalog = $row_catalog['name'];
+  
+    $sql_cart="SELECT image FROM wishlist WHERE image='$image_catalog' AND email='$email'";
+    $result_cart = mysqli_query($connect,$sql_cart);
+    
+    if(mysqli_num_rows($result_cart)>0){
+      $message="This product is added before already";
+    }else{
+      $sql_wishlist="INSERT INTO wishlist (email,price,image,name) 
+                              VALUES('$email','$price_catalog','$image_catalog','$name_catalog')";
+      $result_wishlist = mysqli_query($connect,$sql_wishlist);
+      if($result_wishlist){
+        $message = "Addition to your wishlist is done successfully";
+      }
+    }
+  }
+}
+// END OF ADD OF WISHLIST
+
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -592,7 +679,7 @@
         <nav class="mx-auto w-full mt-4 max-w-[1200px] px-5">
           <ul class="flex items-center">
             <li class="cursor-pointer">
-              <a href="index.php">
+              <a href="catalog.php">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -612,7 +699,7 @@
               <span class="mx-2 text-gray-500">&gt;</span>
             </li>
 
-            <li class="text-gray-500">Big italian sofa</li>
+            <li class="text-gray-500"><?php echo $row['name'] ?></li>
           </ul>
         </nav>
         <!-- /breadcrumbs  -->
@@ -626,8 +713,8 @@
         <div class="container mx-auto px-4">
           <img
             class="w-full"
-            src="./assets/images/product-bigsofa.png"
-            alt="Sofa image"
+            src="<?php echo $row['image'] ?>"
+            alt="<?php echo $row['name']."image"?>"
           />
 
           <div class="mt-3 grid grid-cols-4 gap-4">
@@ -669,7 +756,7 @@
         <!-- description  -->
 
         <div class="mx-auto px-5 lg:px-5">
-          <h2 class="pt-3 text-2xl font-bold lg:pt-0">BIG ITALIAN SOFA</h2>
+          <h2 class="pt-3 text-2xl font-bold lg:pt-0"><?php echo $row['name'] ?></h2>
           <div class="mt-1">
             <div class="flex items-center">
               <svg
@@ -753,7 +840,7 @@
           </p>
 
           <p class="mt-4 text-4xl font-bold text-violet-900">
-            $450 <span class="text-xs text-gray-400 line-through">$550</span>
+            <?php echo "$".$row['new_price'] ?> <span class="text-xs text-gray-400 line-through"><?php echo "$".$row['price'] ?></span>
           </p>
 
           <p class="pt-5 text-sm leading-5 text-gray-500">
@@ -834,50 +921,56 @@
               </button>
             </div>
           </div>
+    <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
+      <div class="mt-7 flex flex-row items-center gap-6">
+        <button
+          class="flex h-12 w-1/3 items-center justify-center rounded-lg bg-violet-900 text-white duration-100 hover:bg-violet-800 cursor-pointer" 
+          type="submit"
+          name="add_to_cart"
+          value="<?php echo $row['id'] ?>">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="mr-3 h-4 w-4"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+            />
+          </svg>
 
-          <div class="mt-7 flex flex-row items-center gap-6">
-            <button
-              class="flex h-12 w-1/3 items-center justify-center bg-violet-900 text-white duration-100 hover:bg-blue-800"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="mr-3 h-4 w-4"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
-                />
-              </svg>
+          Add to cart
+        </button>
+        <button
+          class="flex h-12 w-1/3 items-center justify-center bg-amber-400 duration-100 hover:bg-yellow-300 rounded-lg cursor-pointer"
+          type="submit"
+          name="add_to_wishlist"
+          value="<?php echo $row['id'] ?>">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="mr-3 h-4 w-4"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+            />
+          </svg>
 
-              Add to cart
-            </button>
-            <button
-              class="flex h-12 w-1/3 items-center justify-center bg-amber-400 duration-100 hover:bg-yellow-300"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="mr-3 h-4 w-4"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                />
-              </svg>
-
-              Wishlist
-            </button>
-          </div>
-        </div>
+          Wishlist
+        </button>
+      </div>
+    </form>
+  </div>
+  <span class="bg-green-300 text-center font-bold"><?php echo $message ?></span>
       </section>
 
       <!-- product details  -->
