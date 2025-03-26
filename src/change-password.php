@@ -886,7 +886,10 @@ if(isset($_POST['log_out'])){
                 />
               </div>
 
-              <button class="mt-4 w-40 bg-violet-900 px-4 py-2 text-white" type="submit" name="update">
+              <button 
+              class="mt-4 w-40 bg-violet-900 hover:bg-violet-700 px-4 py-2 text-white rounded-lg cursor-pointer" 
+              type="submit" 
+              name="update">
                 Save changes
               </button>
             </form>
