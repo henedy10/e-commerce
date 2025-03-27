@@ -1,3 +1,7 @@
+<?php
+session_start();
+$total_price=isset($_SESSION['total_price']) ? $_SESSION['total_price'] : 0;
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -748,7 +752,7 @@
 
                 <div class="flex justify-between border-b py-5">
                   <p>Subtotal</p>
-                  <p>$1280</p>
+                  <p>$<?php echo $total_price ?></p>
                 </div>
 
                 <div class="flex justify-between border-b py-5">
@@ -758,7 +762,7 @@
 
                 <div class="flex justify-between py-5">
                   <p>Total</p>
-                  <p>$1280</p>
+                  <p>$<?php echo $total_price ?></p>
                 </div>
               </div>
             </div>

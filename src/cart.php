@@ -901,9 +901,11 @@ $nums_row=mysqli_num_rows($result);
               </tr>
                 </thead>
                   <tbody>
-                <!-- 1 -->
-                  <?php for($i=0;$i<$nums_row;$i++):?>
-                  <?php $rows=mysqli_fetch_assoc($result);?>
+
+                  <?php 
+                    for($i=0;$i<$nums_row;$i++):
+                    $rows=mysqli_fetch_assoc($result);
+                  ?>
                     <tr class="h-[100px] border-b">
                       <td class="align-middle">
                         <div class="flex">
@@ -991,7 +993,7 @@ $nums_row=mysqli_num_rows($result);
               </div>
 
               <a href="checkout-address.php">
-                <button class="w-full bg-violet-900 px-5 py-2 text-white">
+                <button class="w-full bg-violet-900 hover:bg-violet-800 px-5 py-2 text-white cursor-pointer rounded-lg">
                   Proceed to checkout
                 </button>
               </a>
@@ -1119,6 +1121,6 @@ $nums_row=mysqli_num_rows($result);
   </body>
 </html>
 <?php
-
+$_SESSION['total_price']=$total_price;
 
 ?>

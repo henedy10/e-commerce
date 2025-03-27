@@ -1,3 +1,24 @@
+<?php
+session_start();
+include "db.php";
+$check=new DataBase();
+$connect = $check->connect;
+
+$total_price=isset($_SESSION['total_price']) ? $_SESSION['total_price'] : 0;
+$email=isset($_SESSION['email'])? $_SESSION['email'] : NULL;
+
+$sql_cart="SELECT *FROM cart WHERE email='$email'";
+$result_cart=mysqli_query($connect,$sql_cart);
+$nums_row=mysqli_num_rows($result_cart);
+
+// // fetch user's address 
+
+// $sql_address="SELECT *FROM account WHERE email='$email'";
+// $result_address=mysqli_query($connect,$sql_address);
+// $rows_address=mysqli_fetch_assoc($result_address);
+
+// // end of fetch process
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -806,89 +827,29 @@
                 </tr>
               </thead>
               <tbody>
-                <!-- 1 -->
-
+                <?php
+                  for($i=0;$i<$nums_row;$i++):
+                  $rows=mysqli_fetch_assoc($result_cart);
+                ?>
                 <tr class="h-[100px] border-b">
                   <td class="align-middle">
                     <div class="flex">
                       <img
                         class="w-[90px]"
-                        src="./assets/images/bedroom.png"
+                        src="<?php echo $rows['image']?>"
                         alt="bedroom image"
                       />
                       <div class="ml-3 flex flex-col justify-center">
-                        <p class="text-xl font-bold">ITALIAN BED</p>
+                        <p class="text-xl font-bold"><?php echo $rows['name']?></p>
                         <p class="text-sm text-gray-400">Size: XL</p>
                       </div>
                     </div>
                   </td>
-                  <td class="mx-auto text-center">&#36;320</td>
+                  <td class="mx-auto text-center">&#36;<?php echo $rows['price']?></td>
                   <td class="text-center align-middle">1</td>
-                  <td class="mx-auto text-center">&#36;320</td>
+                  <td class="mx-auto text-center">&#36;<?php echo $rows['total_price']?></td>
                 </tr>
-
-                <!-- 2 -->
-
-                <tr class="h-[100px] border-b">
-                  <td class="align-middle">
-                    <div class="flex">
-                      <img
-                        class="w-[90px]"
-                        src="./assets/images/product-chair.png"
-                        alt="Chair Image"
-                      />
-                      <div class="ml-3 flex flex-col justify-center">
-                        <p class="text-xl font-bold">GUYER CHAIR</p>
-                        <p class="text-sm text-gray-400">Size: XL</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="mx-auto text-center">&#36;320</td>
-                  <td class="text-center align-middle">1</td>
-                  <td class="mx-auto text-center">&#36;320</td>
-                </tr>
-
-                <!-- 3 -->
-
-                <tr class="h-[100px] border-b">
-                  <td class="align-middle">
-                    <div class="flex">
-                      <img
-                        class="w-[90px]"
-                        src="./assets/images/outdoors.png"
-                        alt="Outdoor furniture"
-                      />
-                      <div class="ml-3 flex flex-col justify-center">
-                        <p class="text-xl font-bold">OUTDOOR CHAIR</p>
-                        <p class="text-sm text-gray-400">Size: XL</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="mx-auto text-center">&#36;320</td>
-                  <td class="text-center align-middle">1</td>
-                  <td class="mx-auto text-center">&#36;320</td>
-                </tr>
-
-                <!-- 4 -->
-
-                <tr class="h-[100px]">
-                  <td class="align-middle">
-                    <div class="flex">
-                      <img
-                        class="w-[90px]"
-                        src="./assets/images/matrass.png"
-                        alt="Matrass Image"
-                      />
-                      <div class="ml-3 flex flex-col justify-center">
-                        <p class="text-xl font-bold">MATRASS COMFORT &plus;</p>
-                        <p class="text-sm text-gray-400">Size: XL</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="mx-auto text-center">&#36;320</td>
-                  <td class="text-center align-middle">1</td>
-                  <td class="mx-auto text-center">&#36;320</td>
-                </tr>
+                <?php endfor; ?>
               </tbody>
             </table>
             <!-- /Product table  -->
@@ -902,13 +863,13 @@
 
               <div class="mx-auto flex justify-center gap-2 lg:mx-0">
                 <a
-                  href="checkout-payment.html"
+                  href="checkout-payment.php"
                   class="bg-purple-900 px-4 py-2 text-white"
                   >Previous step</a
                 >
 
                 <a
-                  href="checkout-confirmation.html"
+                  href="checkout-confirmation.php"
                   class="bg-amber-400 px-4 py-2"
                   >Place Order</a
                 >
@@ -926,7 +887,7 @@
 
                 <div class="flex justify-between border-b py-5">
                   <p>Subtotal</p>
-                  <p>$1280</p>
+                  <p>$<?php echo $total_price ?></p>
                 </div>
 
                 <div class="flex justify-between border-b py-5">
@@ -936,7 +897,7 @@
 
                 <div class="flex justify-between py-5">
                   <p>Total</p>
-                  <p>$1280</p>
+                  <p>$<?php echo $total_price ?></p>
                 </div>
               </div>
             </div>
