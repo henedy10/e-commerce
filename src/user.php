@@ -150,9 +150,9 @@ class User{
         if(empty($first_name)||empty($last_name)||empty($bio)){
             return "Check that all input is not empty, please";
         }else{
-            if(!preg_match('/^[a-zA-Z0-9]*$/',$first_name)){
+            if(!preg_match("/^[a-zA-Z0-9' ]*$/",$first_name)){
                 return"Your first-name is Invalid";
-            }elseif(!preg_match('/^[a-zA-Z0-9]*$/',$last_name)){
+            }elseif(!preg_match("/^[a-zA-Z0-9' ]*$/",$last_name)){
                 return"Your last-name is Invalid";
             }else{
                 if($checkemail==null){
@@ -180,6 +180,8 @@ class User{
             $checkemail=isset($_SESSION['email']) ? $_SESSION['email'] : null;
             if($checkemail==null){
                 return "You should log in first!";
+            }elseif(!preg_match('/^[0-9]{6}$/',$zip_code)){
+                return "Your Zip Code is Invalid, Allow numbers [0-9] only and 6 digits only ";
             }else{
                 
                 $sql="UPDATE account SET country='$country' 
@@ -199,25 +201,65 @@ class User{
         header("location:index.php");
     }
     
-    
-    public function save_payment($card_num,$card_holder,$month,$year,$pass){
-        if(empty($card_num)||empty($card_holder)||empty($month)||empty($year)||empty($pass)){
+    public function checkout_address($username,$email,$street,$city,$zip_code,$recipient,$commentary){
+        if(empty($username)||empty($email)||empty($street)||empty($city)||empty($zip_code)||empty($recipient)){
             return "Check that all input is not empty, please";
         }else{
-            $checkemail= isset($_SESSION['email'])? $_SESSION['email']:null;
-            $sql="UPDATE payment SET 
-                card_num='$card_num',
-                name='$card_holder',
-                month='$month',
-                year='$year',
-                password='$pass'
-                WHERE email='$checkemail'";
-            $result= mysqli_query($this->db->connect,$sql);
-            if($result){
-                return"your change is record successfully";
+            $checkemail=isset($_SESSION['email']) ? $_SESSION['email'] : null;
+            $checkname=isset($_SESSION['name'])? $_SESSION['name'] : null;
+            if($checkemail==null){
+                return "You should log in first!";
+            }else{
+                if(!preg_match("/^[a-zA-Z0-9' ]*$/",$username)||!preg_match("/^[a-zA-Z0-9' ]*$/",$recipient)){
+                    return"Your fullname/recipient is Invalid";
+                }elseif(!filter_var($email,FILTER_VALIDATE_EMAIL)){
+                    return "Your email is Invalid";
+                }elseif(!preg_match('/^[0-9]{6}$/',$zip_code)){
+                    return "Your Zip Code is Invalid, Allow numbers [0-9] only and 6 digits only ";
+                }elseif(!preg_match("/^[a-zA-Z' ]*$/",$city)){
+                    return "There is an error in city's name!";
+                }elseif(!preg_match("/^[a-zA-Z0-9,' ]*$/",$street)){
+                    return "There is an error in street's name!";
+                }else{
+                    if($username!=$checkname||$email!=$checkemail){
+                        return "You should submit with fullname and email of your account, check your info again!";
+                    }else{
+                        $sql="INSERT INTO checkout (full_name,email,street,city,zip_code,recipient,commentary) 
+                                VALUES ('$username','$email','$street','$city','$zip_code','$recipient','$commentary')";
+                        $result= mysqli_query($this->db->connect,$sql);
+                        if($result){
+                            header("location:checkout-delivery.php");
+                        }
+                    }
+                }
             }
         }
-        
+    }
+    
+    public function payment($card_num,$card_holder,$expire_month,$expire_year,$cvv_cvc){
+        if(empty($card_num)||empty($card_holder)||empty($expire_month)||empty($expire_year)||empty($cvv_cvc)){
+            return "Check that all input is not empty, please";
+        }else{
+            if(!preg_match("/^[0-9]{4}[' ][0-9]{4}[' ][0-9]{4}[' ][0-9]{4}$/",$card_num)){
+                return "check your card number , allow only numbers[0-9],white spaces and 16 digits";
+            }elseif(!preg_match("/^[a-zA-Z0-9' ]*$/",$card_holder)){
+                return"Your card holder is Invalid,allow only [a-zA-Z0-9' ]";
+            }elseif(!preg_match("/^[0-9]{3}$/",$cvv_cvc)){
+                return"Your cvv/cvc is invalid, allow[0-9] only and 3 digits";
+            }else{
+                    $hashedpass=password_hash($cvv_cvc,PASSWORD_DEFAULT);
+                    $sql="UPDATE checkout SET 
+                        card_num='$card_num',
+                        card_holder='$card_holder',
+                        expire_month='$expire_month',
+                        expire_year='$expire_year',
+                        cvc_cvv='$hashedpass'";
+                    $result= mysqli_query($this->db->connect,$sql);
+                    if($result){
+                        header("location: order-overview.php");
+                    }
+            }
+        }
     }
 }
 ?>

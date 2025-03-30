@@ -1,6 +1,17 @@
 <?php
-session_start();
+include "user.php";
 $total_price=isset($_SESSION['total_price']) ? $_SESSION['total_price'] : 0;
+$email=isset($_SESSION['email'])? $_SESSION['email'] : NULL;
+$check=new DataBase();
+$connect = $check->connect;
+if(isset($_POST['submit'])){
+    $method_delivery=$_POST['type_delivery'];
+    $sql="UPDATE checkout SET method_delivery ='$method_delivery' WHERE email='$email'";
+    $result=mysqli_query($connect,$sql);
+    if($result){
+      header("location:checkout-payment.php");
+    }
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -647,12 +658,13 @@ $total_price=isset($_SESSION['total_price']) ? $_SESSION['total_price'] : 0;
             <div class="py-5">
               <form
                 class="grid w-full grid-cols-1 gap-3 lg:grid-cols-2"
-                action=""
+                action="<?php echo $_SERVER['PHP_SELF']?>"
+                method="POST"
               >
                 <div class="flex w-full justify-between gap-2">
                   <div class="flex w-full cursor-pointer flex-col border">
                     <div class="flex bg-amber-400 px-4 py-2">
-                      <input class="outline-yellow-400" type="radio" />
+                      <input class="outline-yellow-400" type="radio" name="type_delivery" value="DHL" />
 
                       <p class="ml-3 font-bold">DHL, next day</p>
                     </div>
@@ -670,7 +682,7 @@ $total_price=isset($_SESSION['total_price']) ? $_SESSION['total_price'] : 0;
 
                 <div class="flex w-full cursor-pointer flex-col border">
                   <div class="flex bg-amber-400 px-4 py-2">
-                    <input class="outline-yellow-400" type="radio" />
+                    <input class="outline-yellow-400" type="radio" name="type_delivery" value="SDEK" />
 
                     <p class="ml-3 cursor-pointer font-bold">SDEK, 3 hours</p>
                   </div>
@@ -687,7 +699,7 @@ $total_price=isset($_SESSION['total_price']) ? $_SESSION['total_price'] : 0;
 
                 <div class="flex w-full cursor-pointer flex-col border">
                   <div class="flex bg-amber-400 px-4 py-2">
-                    <input class="outline-yellow-400" type="radio" />
+                    <input class="outline-yellow-400" type="radio" name="type_delivery" value="UPS"/>
 
                     <p class="ml-3 font-bold">UPS, Secure Delivery</p>
                   </div>
@@ -704,7 +716,7 @@ $total_price=isset($_SESSION['total_price']) ? $_SESSION['total_price'] : 0;
 
                 <div class="flex w-full cursor-pointer flex-col border">
                   <div class="flex bg-amber-400 px-4 py-2">
-                    <input class="outline-yellow-400" type="radio" />
+                    <input class="outline-yellow-400" type="radio" name="type_delivery" value="Pochta Rossii" />
 
                     <p class="ml-3 font-bold">Pochta Rossii, 12 years</p>
                   </div>
@@ -718,28 +730,28 @@ $total_price=isset($_SESSION['total_price']) ? $_SESSION['total_price'] : 0;
                     </p>
                   </div>
                 </div>
+                
+                <div class="flex w-full items-center justify-between">
+                  <a
+                    href="catalog.php"
+                    class="hidden text-sm text-violet-900 lg:block"
+                    >&larr; Back to the shop</a
+                  >
+                  </div>
+      
+                    <div class="mx-auto flex justify-center gap-2 lg:mx-0 mt-5">
+                      <a
+                        href="checkout-address.php"
+                        class="bg-purple-900 px-4 py-2 text-white"
+                        >Previous step</a
+                      >
+      
+                      <button type="submit" name="submit" class="bg-amber-400 px-4 py-2"
+                        >Payment method</button
+                      >
+                    </div>
+                  </div>
               </form>
-            </div>
-
-            <div class="flex w-full items-center justify-between">
-              <a
-                href="catalog.php"
-                class="hidden text-sm text-violet-900 lg:block"
-                >&larr; Back to the shop</a
-              >
-
-              <div class="mx-auto flex justify-center gap-2 lg:mx-0">
-                <a
-                  href="checkout-address.php"
-                  class="bg-purple-900 px-4 py-2 text-white"
-                  >Previous step</a
-                >
-
-                <a href="checkout-payment.php" class="bg-amber-400 px-4 py-2"
-                  >Payment method</a
-                >
-              </div>
-            </div>
           </section>
           <!-- /form  -->
 

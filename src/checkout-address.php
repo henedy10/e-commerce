@@ -1,6 +1,19 @@
 <?php
-session_start();
-$total_price=isset($_SESSION['total_price']) ? $_SESSION['total_price'] : 0;
+include "user.php";
+$total_price=$_SESSION['total_price'];
+$user = new User();
+$message="";
+if(isset($_POST['first_place'])){
+$message=$user->checkout_address(
+  $_POST['fullname']
+  ,$_POST['email']
+  ,$_POST['street']
+  ,$_POST['city']
+  ,$_POST['code']
+  ,$_POST['recipient']
+  ,$_POST['commentary']
+);
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -649,7 +662,7 @@ $total_price=isset($_SESSION['total_price']) ? $_SESSION['total_price'] : 0;
             </table>
 
             <div class="py-5">
-              <form class="flex w-full flex-col gap-3" action="">
+              <form class="flex w-full flex-col gap-3" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
                 <div class="flex w-full justify-between gap-2">
                   <div class="flex w-1/2 flex-col">
                     <label class="flex" for="name"
@@ -660,12 +673,14 @@ $total_price=isset($_SESSION['total_price']) ? $_SESSION['total_price'] : 0;
                     <input
                       class="w-full border px-4 py-2 outline-yellow-400"
                       type="text"
+                      id="name"
+                      name="fullname"
                       placeholder="Sarah Johnson"
                     />
                   </div>
 
                   <div class="flex w-1/2 flex-col">
-                    <label class="flex" for="name"
+                    <label class="flex" for="email"
                       >Email Address<span
                         class="block text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 after:content-['*']"
                       ></span
@@ -674,15 +689,15 @@ $total_price=isset($_SESSION['total_price']) ? $_SESSION['total_price'] : 0;
                       class="w-full border px-4 py-2 outline-yellow-400"
                       type="text"
                       placeholder="sarahj@maybell.com"
-                      name=""
-                      id=""
+                      name="email"
+                      id="email"
                     />
                   </div>
                 </div>
 
                 <div class="flex w-full justify-between gap-2">
                   <div class="flex w-1/2 flex-col">
-                    <label class="flex" for="name"
+                    <label class="flex" for="street"
                       >Street<span
                         class="block text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 after:content-['*']"
                       ></span
@@ -690,12 +705,14 @@ $total_price=isset($_SESSION['total_price']) ? $_SESSION['total_price'] : 0;
                     <input
                       class="w-full border px-4 py-2 outline-yellow-400"
                       type="text"
+                      id="street"
+                      name="street"
                       placeholder="Big Serbian avenue, 18"
                     />
                   </div>
 
                   <div class="flex w-1/2 flex-col">
-                    <label class="flex" for="name"
+                    <label class="flex" for="city"
                       >City<span
                         class="block text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 after:content-['*']"
                       ></span
@@ -704,15 +721,15 @@ $total_price=isset($_SESSION['total_price']) ? $_SESSION['total_price'] : 0;
                       class="w-full border px-4 py-2 outline-yellow-400"
                       type="text"
                       placeholder="Belgrade"
-                      name=""
-                      id=""
+                      name="city"
+                      id="city"
                     />
                   </div>
                 </div>
 
                 <div class="flex w-full justify-between gap-2">
                   <div class="flex w-1/2 flex-col">
-                    <label class="flex" for="name"
+                    <label class="flex" for="code"
                       >ZIP code<span
                         class="block text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 after:content-['*']"
                       ></span
@@ -720,12 +737,14 @@ $total_price=isset($_SESSION['total_price']) ? $_SESSION['total_price'] : 0;
                     <input
                       x-mask="999999"
                       class="w-full border px-4 py-2 outline-yellow-400"
+                      id="code"
+                      name="code"
                       placeholder="176356"
                     />
                   </div>
 
                   <div class="flex w-1/2 flex-col">
-                    <label class="flex" for="name"
+                    <label class="flex" for="recipient"
                       >Recipient<span
                         class="block text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 after:content-['*']"
                       ></span
@@ -734,30 +753,33 @@ $total_price=isset($_SESSION['total_price']) ? $_SESSION['total_price'] : 0;
                       class="w-full border px-4 py-2 outline-yellow-400"
                       type="text"
                       placeholder="Andrew Johnson"
-                      name=""
-                      id=""
+                      name="recipient"
+                      id="recipient"
                     />
                   </div>
                 </div>
 
                 <div class="flex flex-col">
-                  <label for="">Commentary</label>
+                  <label for="commentary">Commentary</label>
                   <textarea
                     class="border px-4 py-2 outline-yellow-400"
                     type="text"
+                    id="commentary"
+                    name="commentary"
                   ></textarea>
                 </div>
+                
+                <div class="flex w-full items-center justify-between mt-5">
+                  <a href="catalog.php" class="text-sm text-violet-900"
+                  >&larr; Back to the shop</a
+                  >
+                  
+                  <button type="submit" name="first_place" class="bg-amber-400 px-4 py-2 cursor-pointer">
+                    Place an order
+                  </button>
+                </div>
+                <span class="bg-green-400 text-center font-bold"><?php echo $message ?></span>
               </form>
-            </div>
-
-            <div class="flex w-full items-center justify-between">
-              <a href="catalog.php" class="text-sm text-violet-900"
-                >&larr; Back to the shop</a
-              >
-
-              <a href="checkout-delivery.php" class="bg-amber-400 px-4 py-2"
-                >Place an order</a
-              >
             </div>
           </section>
           <!-- /form  -->

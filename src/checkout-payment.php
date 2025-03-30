@@ -1,6 +1,11 @@
 <?php
-session_start();
+include "user.php";
 $total_price=isset($_SESSION['total_price']) ? $_SESSION['total_price'] : 0;
+$message="";
+$user=new User();
+if(isset($_POST['review'])){
+$message=$user->payment($_POST['card_num'],$_POST['card_holder'],$_POST['expire_month'],$_POST['expire_year'],$_POST['cvv_cvc']);
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -649,13 +654,15 @@ $total_price=isset($_SESSION['total_price']) ? $_SESSION['total_price'] : 0;
             </table>
 
             <div class="py-5">
-              <form class="flex w-full flex-col gap-3" action="">
+              <form class="flex w-full flex-col gap-3" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
                 <div class="flex w-full flex-col">
-                  <label class="flex" for="name">Payment Card Number</label>
+                  <label class="flex" for="card_num">Payment Card Number</label>
                   <input
                     x-mask="9999 9999 9999 9999"
                     class="w-full border px-4 py-2 lg:w-1/2"
-                    placeholder="1223 4568 7644 4839"
+                    placeholder="**** **** **** ****"
+                    id="card_num"
+                    name="card_num"
                   />
                 </div>
 
@@ -664,41 +671,49 @@ $total_price=isset($_SESSION['total_price']) ? $_SESSION['total_price'] : 0;
                   <input
                     class="w-full border px-4 py-2 lg:w-1/2"
                     type="text"
-                    placeholder="SARAH JOHNSON"
+                    placeholder="Card Holder"
+                    id="name"
+                    name="card_holder"
                   />
                 </div>
 
                 <div class="flex items-center gap-5 lg:w-1/2">
                   <div class="flex flex-col">
-                    <label class="flex" for="name">Expiry Date</label>
+                    <label class="flex" for="expiry_date">Expiry Date</label>
 
                     <div class="flex w-[150px] items-center gap-1">
                       <input
                         x-mask="99"
                         class="w-1/2 border px-4 py-2 text-center"
-                        name=""
-                        id=""
+                        type="number"
+                        name="expire_month"
+                        id="expiry_date"
                         placeholder="10"
-                      />
-
-                      <span>&bsol;</span>
-
-                      <input
+                        max="12"
+                        min="1"
+                        />
+                        
+                        <span>&bsol;</span>
+                        
+                        <input
                         x-mask="99"
                         class="w-1/2 border px-4 py-2 text-center"
-                        name=""
-                        id=""
+                        type="number"
+                        name="expire_year"
                         placeholder="36"
+                        min="25"
                       />
                     </div>
                   </div>
 
                   <div class="flex flex-col w-[60px] lg:w-[110px]">
-                    <label class="flex" for="">CVV/CVC</label>
+                    <label class="flex" for="cvv/cvc">CVV/CVC</label>
                     <input
                       x-mask="999"
                       class="w-full border py-2 text-center lg:w-1/2"
                       type="password"
+                      id="cvv/cvc"
+                      name="cvv_cvc"
                       placeholder="&bull;&bull;&bull;"
                     />
                   </div>
@@ -739,27 +754,33 @@ $total_price=isset($_SESSION['total_price']) ? $_SESSION['total_price'] : 0;
                   />
                 </section>
                 <!-- another payment-methods -->
+                
+                <div class="flex w-full items-center justify-between">
+                  <a
+                    href="catalog.php"
+                    class="hidden text-sm text-violet-900 lg:block"
+                    >&larr; Back to the shop</a
+                  >
+    
+                  <div class="mx-auto flex justify-center gap-2 lg:mx-0">
+                    <button
+                      class="bg-purple-900 px-4 py-2 text-white cursor-pointer"
+                      type="submit"
+                    >
+                    Previous step
+                    </button>
+    
+                    <button
+                      class="bg-amber-400 px-4 py-2 cursor-pointer"
+                      type="submit"
+                      name="review"
+                    >
+                    Checkout review
+                    </button>
+                  </div>
+                </div>
               </form>
-            </div>
-
-            <div class="flex w-full items-center justify-between">
-              <a
-                href="catalog.php"
-                class="hidden text-sm text-violet-900 lg:block"
-                >&larr; Back to the shop</a
-              >
-
-              <div class="mx-auto flex justify-center gap-2 lg:mx-0">
-                <a
-                  href="checkout-delivery.php"
-                  class="bg-purple-900 px-4 py-2 text-white"
-                  >Previous step</a
-                >
-
-                <a href="checkout-review.php" class="bg-amber-400 px-4 py-2"
-                  >Checkout review</a
-                >
-              </div>
+              <span><?php echo $message ?></span>
             </div>
           </section>
           <!-- /form  -->

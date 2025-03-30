@@ -1,10 +1,15 @@
 <?php 
-
 include "user.php";
 $message="";
 $user = new User();
 if(isset($_POST['signup'])){
-  $message = $user -> signup($_POST['name'],$_POST['email'],$_POST['password'],$_POST['confirmpass'],isset($_POST['checkbox']));
+  $message = $user -> signup(
+    $_POST['name'],
+    $_POST['email'],
+    $_POST['password'],
+    $_POST['confirmpass'],
+    isset($_POST['checkbox'])
+  );
 }
 
 ?>

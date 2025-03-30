@@ -633,7 +633,7 @@ if(isset($_POST['login'])){
                 <input type="checkbox" />
                 <label for="checkbox">Remember me</label>
               </div>
-            <a href="#" class="text-violet-900">Forgot password</a>
+            <a href="change-password.php" class="text-violet-900">Forgot password</a>
           </div>
                 <button class="my-5 w-full bg-violet-900 hover:bg-violet-700 font-bold py-2 text-white rounded-lg cursor-pointer" type="submit" name="login">
                   LOGIN

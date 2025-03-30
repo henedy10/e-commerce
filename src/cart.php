@@ -2,16 +2,24 @@
 session_start();
 include "db.php";
 $total_price=0;
+$special_message="";
 $check=new DataBase();
 $connect = $check->connect;
 $email=isset($_SESSION['email']) ? $_SESSION['email']:null;
+
 
 if(isset($_POST['delete'])){
   $image=$_POST['delete'];
   $sql_delete="DELETE FROM cart WHERE image='$image'";
   $result_delete = mysqli_query($connect,$sql_delete);
 }
-
+if(isset($_POST['submit'])){
+  if($email==NULL){
+    $special_message = "You should log in first or create account";
+  }else{
+    header("location: checkout-address.php");
+  }
+}
 $sql="SELECT *FROM cart WHERE email='$email'";
 $result=mysqli_query($connect,$sql);
 $nums_row=mysqli_num_rows($result);
@@ -992,11 +1000,16 @@ $nums_row=mysqli_num_rows($result);
                 <p><?php echo "$".$total_price; ?></p>
               </div>
 
-              <a href="checkout-address.php">
-                <button class="w-full bg-violet-900 hover:bg-violet-800 px-5 py-2 text-white cursor-pointer rounded-lg">
-                  Proceed to checkout
-                </button>
-              </a>
+                <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+                  <button
+                    class="w-full bg-violet-900 hover:bg-violet-800 px-5 py-2 text-white cursor-pointer rounded-lg"
+                    type="submit"
+                    name="submit"
+                  >
+                    Proceed to checkout
+                  </button>
+                </form>
+                <span class="block bg-red-300 text-red-600 font-bold text-center mt-2 rounded-sm"><?php echo $special_message ?></span>
             </div>
           </div>
         </section>
