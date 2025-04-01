@@ -780,7 +780,7 @@ $message=$user->payment($_POST['card_num'],$_POST['card_holder'],$_POST['expire_
                   </div>
                 </div>
               </form>
-              <span><?php echo $message ?></span>
+              <span class="block bg-red-200 text-red-600 font-bold text-center mt-3"><?php echo $message ?></span>
             </div>
           </section>
           <!-- /form  -->

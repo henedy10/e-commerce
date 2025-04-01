@@ -1,3 +1,25 @@
+<?php
+include "user.php";
+$user = new User();
+$checkname=$user -> checkname();
+
+$total_price=isset($_SESSION['total_price']) ? $_SESSION['total_price'] : 0;
+$email=isset($_SESSION['email']) ? $_SESSION['email']:null;
+
+$check=new DataBase();
+$connect = $check->connect;
+
+$sql_cart="SELECT *FROM cart WHERE email='$email'";
+$result_cart=mysqli_query($connect,$sql_cart);
+$nums_row=mysqli_num_rows($result_cart);
+
+$sql="SELECT *FROM checkout WHERE email='$email'";
+$result=mysqli_query($connect,$sql);
+$row=mysqli_fetch_assoc($result);
+
+
+
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -642,7 +664,7 @@
               />
               <div class="ml-5">
                 <p class="font-medium text-gray-500">Hello,</p>
-                <p class="font-bold">Sarah Johnson</p>
+                <p class="font-bold"><?php echo $checkname ?></p>
               </div>
             </div>
           </div>
@@ -972,89 +994,29 @@
               </tr>
             </thead>
             <tbody>
-              <!-- 1 -->
-
+            <?php 
+                  for($i=0;$i<$nums_row;$i++):
+                  $rows=mysqli_fetch_assoc($result_cart);
+            ?>
               <tr class="h-[100px] border-b">
                 <td class="align-middle">
                   <div class="flex">
                     <img
                       class="w-[90px]"
-                      src="./assets/images/bedroom.png"
+                      src="<?php echo $rows['image']?>"
                       alt="bedroom image"
                     />
                     <div class="ml-3 flex flex-col justify-center">
-                      <p class="text-xl font-bold">ITALIAN BED</p>
+                      <p class="text-xl font-bold"><?php echo $rows['name']?></p>
                       <p class="text-sm text-gray-400">Size: XL</p>
                     </div>
                   </div>
                 </td>
-                <td class="mx-auto text-center">&#36;320</td>
+                <td class="mx-auto text-center">&#36;<?php echo $rows['price']?></td>
                 <td class="text-center align-middle">1</td>
-                <td class="mx-auto text-center">&#36;320</td>
+                <td class="mx-auto text-center">&#36;<?php echo $rows['total_price']?></td>
               </tr>
-
-              <!-- 2 -->
-
-              <tr class="h-[100px] border-b">
-                <td class="align-middle">
-                  <div class="flex">
-                    <img
-                      class="w-[90px]"
-                      src="./assets/images/product-chair.png"
-                      alt="Chair Image"
-                    />
-                    <div class="ml-3 flex flex-col justify-center">
-                      <p class="text-xl font-bold">GUYER CHAIR</p>
-                      <p class="text-sm text-gray-400">Size: XL</p>
-                    </div>
-                  </div>
-                </td>
-                <td class="mx-auto text-center">&#36;320</td>
-                <td class="text-center align-middle">1</td>
-                <td class="mx-auto text-center">&#36;320</td>
-              </tr>
-
-              <!-- 3 -->
-
-              <tr class="h-[100px] border-b">
-                <td class="align-middle">
-                  <div class="flex">
-                    <img
-                      class="w-[90px]"
-                      src="./assets/images/outdoors.png"
-                      alt="Outdoor furniture"
-                    />
-                    <div class="ml-3 flex flex-col justify-center">
-                      <p class="text-xl font-bold">OUTDOOR CHAIR</p>
-                      <p class="text-sm text-gray-400">Size: XL</p>
-                    </div>
-                  </div>
-                </td>
-                <td class="mx-auto text-center">&#36;320</td>
-                <td class="text-center align-middle">1</td>
-                <td class="mx-auto text-center">&#36;320</td>
-              </tr>
-
-              <!-- 4 -->
-
-              <tr class="h-[100px]">
-                <td class="align-middle">
-                  <div class="flex">
-                    <img
-                      class="w-[90px]"
-                      src="./assets/images/matrass.png"
-                      alt="Matrass Image"
-                    />
-                    <div class="ml-3 flex flex-col justify-center">
-                      <p class="text-xl font-bold">MATRASS COMFORT &plus;</p>
-                      <p class="text-sm text-gray-400">Size: XL</p>
-                    </div>
-                  </div>
-                </td>
-                <td class="mx-auto text-center">&#36;320</td>
-                <td class="text-center align-middle">1</td>
-                <td class="mx-auto text-center">&#36;320</td>
-              </tr>
+              <?php endfor; ?>
             </tbody>
           </table>
           <!-- /Product table  -->
@@ -1068,7 +1030,7 @@
 
                 <div class="flex justify-between border-b py-5">
                   <p>Subtotal</p>
-                  <p>$1280</p>
+                  <p>$<?php echo $total_price ?></p>
                 </div>
 
                 <div class="flex justify-between border-b py-5">
@@ -1078,7 +1040,7 @@
 
                 <div class="flex justify-between py-5">
                   <p>Total</p>
-                  <p>$1280</p>
+                  <p>$<?php echo $total_price ?></p>
                 </div>
               </div>
             </div>
@@ -1090,7 +1052,7 @@
                 <p class="font-bold">ORDER INFORMATION</p>
 
                 <div>
-                  <p>Order &num;1245</p>
+                  <p>Order &num;<?php echo $row['id_order'] ?></p>
                 </div>
 
                 <div class="flex flex-col border-b py-5">
@@ -1099,7 +1061,7 @@
                     <span class="font-bold text-green-600">Delivered</span>
                   </p>
 
-                  <p>Date: 20/12/2023</p>
+                  <p>Date: <?php echo $row['date_order'] ?></p>
                 </div>
 
                 <div></div>
@@ -1107,16 +1069,16 @@
                 <div class="flex flex-col border-b py-5">
                   <p class="font-bold">ADDRESS INFORMATION</p>
                   <p>Country: Serbia</p>
-                  <p>City: Belgrade</p>
-                  <p>Zip-Code: 125647</p>
-                  <p>Delivery: UPS</p>
+                  <p>City: <?php echo $row['city'] ?></p>
+                  <p>Zip-Code: <?php echo $row['zip_code'] ?></p>
+                  <p>Delivery: <?php echo $row['method_delivery'] ?></p>
                 </div>
 
                 <div class="flex flex-col py-5">
                   <p class="font-bold">PAYMENT INFORMATION</p>
                   <p>Payment method: Credit Card</p>
-                  <p>Card Holder: Sarah Johnson</p>
-                  <p>Card number: &bull;&bull;&bull;&bull; 4214</p>
+                  <p>Card Holder: <?php echo $row['card_holder'] ?></p>
+                  <p>Card number: &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; <?php echo $row['card_num'][15].$row['card_num'][16].$row['card_num'][17].$row['card_num'][18] ?></p>
                 </div>
               </div>
             </div>
