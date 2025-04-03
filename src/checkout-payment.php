@@ -6,6 +6,10 @@ $user=new User();
 if(isset($_POST['review'])){
 $message=$user->payment($_POST['card_num'],$_POST['card_holder'],$_POST['expire_month'],$_POST['expire_year'],$_POST['cvv_cvc']);
 }
+
+if(isset($_POST['back'])){
+  header("location:checkout-delivery.php");
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -766,6 +770,7 @@ $message=$user->payment($_POST['card_num'],$_POST['card_holder'],$_POST['expire_
                     <button
                       class="bg-purple-900 px-4 py-2 text-white cursor-pointer"
                       type="submit"
+                      name="back"
                     >
                     Previous step
                     </button>
