@@ -1076,7 +1076,7 @@ $row=mysqli_fetch_assoc($result);
 
                 <div class="flex flex-col py-5">
                   <p class="font-bold">PAYMENT INFORMATION</p>
-                  <p>Payment method: Credit Card</p>
+                  <p>Payment method: <?php echo $row['method_payment'] ?></p>
                   <p>Card Holder: <?php echo $row['card_holder'] ?></p>
                   <p>Card number: &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; <?php echo $row['card_num'][15].$row['card_num'][16].$row['card_num'][17].$row['card_num'][18] ?></p>
                 </div>

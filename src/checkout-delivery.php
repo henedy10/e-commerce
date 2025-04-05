@@ -746,7 +746,7 @@ if(isset($_POST['submit'])){
                         >Previous step</a
                       >
       
-                      <button type="submit" name="submit" class="bg-amber-400 px-4 py-2"
+                      <button type="submit" name="submit" class="bg-amber-400 px-4 py-2 cursor-pointer"
                         >Payment method</button
                       >
                     </div>
