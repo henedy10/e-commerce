@@ -1205,3 +1205,9 @@ $row=mysqli_fetch_assoc($result);
     <script type="module" src="./assets/js/script.js"></script>
   </body>
 </html>
+<?php
+
+$sql="DELETE FROM cart WHERE email ='$email'";
+$result=mysqli_query($connect,$sql);
+
+?>
