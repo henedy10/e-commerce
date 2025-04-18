@@ -2,7 +2,7 @@
 include "user.php";
 $user = new User();
 $checkname=$user -> checkname();
-
+$country=isset($_SESSION['country'])?$_SESSION['country']:"YOUR COUNTRY";
 $total_price=isset($_SESSION['total_price']) ? $_SESSION['total_price'] : 0;
 $email=isset($_SESSION['email']) ? $_SESSION['email']:null;
 
@@ -1068,7 +1068,7 @@ $row=mysqli_fetch_assoc($result);
 
                 <div class="flex flex-col border-b py-5">
                   <p class="font-bold">ADDRESS INFORMATION</p>
-                  <p>Country: Serbia</p>
+                  <p>Country: <?php echo $country ?></p>
                   <p>City: <?php echo $row['city'] ?></p>
                   <p>Zip-Code: <?php echo $row['zip_code'] ?></p>
                   <p>Delivery: <?php echo $row['method_delivery'] ?></p>

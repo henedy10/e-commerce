@@ -160,7 +160,6 @@ class User{
                 }else{
                     $sql="UPDATE account SET first_name='$first_name' 
                     , last_name ='$last_name' 
-                    , image='$image' 
                     , bio='$bio' WHERE email ='$checkemail'";
                     
                     $result= mysqli_query($this->db->connect,$sql);

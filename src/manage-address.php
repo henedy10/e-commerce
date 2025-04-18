@@ -15,8 +15,8 @@ if($checkemail!=null){
   $sql="SELECT country,city,zip_code FROM account WHERE email='$checkemail'";
   $result=mysqli_query($connect->connect,$sql);
   $row=mysqli_fetch_assoc($result);
+  $_SESSION['country']=$row['country'];
 }
-
 // log out
 
 if(isset($_POST['log_out'])){
