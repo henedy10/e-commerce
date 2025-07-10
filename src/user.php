@@ -100,18 +100,17 @@ class User{
         }
     }
     
-    public function change_password($email,$current_pass,$new_pass,$repeat_new_pass){
+    public function change_password($email,$new_pass,$repeat_new_pass){
 
         $checkemail=isset($_SESSION['email']) ? $_SESSION['email'] : null;
         $hashedpass = "";
         
-        if(empty($email)||empty($current_pass)||empty($new_pass)||empty($repeat_new_pass)){
+        if(empty($email)||empty($new_pass)||empty($repeat_new_pass)){
             return "Check that all input is not empty, please";
         }elseif($checkemail==null){
             return "You should log in first";
         }else{
             $this -> email = $email;
-            $this -> password = $current_pass;
             $this -> new_pass = $new_pass;
             $this -> confirmpass = $repeat_new_pass;
             $sql = "SELECT *FROM account WHERE email='$email' ";
@@ -121,9 +120,6 @@ class User{
             }else{
                 $row=mysqli_fetch_assoc($result);
                 
-                if(!password_verify($current_pass,$row['password'])){
-                    return "Your password is Incorrect, check your info!";
-                }else{
                     if($new_pass!=$repeat_new_pass){
                         return "There is an error , check your info again";
                     }else{
@@ -132,7 +128,6 @@ class User{
                         $result= mysqli_query($this->db->connect,$sql);
                         if($result){
                             return "Your Update is done successfully";
-                        }
                     }
                 }
             }

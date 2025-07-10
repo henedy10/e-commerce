@@ -896,8 +896,11 @@ $nums_row=mysqli_num_rows($result);
 
         <!-- Desktop cart table  -->
         <section
-          class="hidden h-[vh] w-full max-w-[1200px] grid-cols-1 gap-3 px-5 pb-10 md:grid"
+        class="hidden h-[vh] w-full max-w-[1200px] grid-cols-1 gap-3 px-5 pb-10 md:grid"
         >
+        <?php if(is_null($email)){ ?>
+                 <p class="text-red-600 font-bold">* You should log in first or create account </p>
+       <?php }else{ ?>
           <table class="table-fixed">
             <thead class="h-16 bg-neutral-100">
               <tr>
@@ -1012,9 +1015,9 @@ $nums_row=mysqli_num_rows($result);
                 <span class="block bg-red-300 text-red-600 font-bold text-center mt-2 rounded-sm"><?php echo $special_message ?></span>
             </div>
           </div>
+          <?php }?>
         </section>
       </section>
-
       <!-- /Summary -->
 
       <!-- Desktop Footer  -->

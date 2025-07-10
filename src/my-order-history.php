@@ -920,65 +920,7 @@ if(isset($_POST['log_out'])){
                 </td>
                 <td class="text-center align-middle">
                   <a href="order-overview.php" class="bg-amber-400 px-4 py-2"
-                    ><button class="text-center">View</button></a
-                  >
-                </td>
-              </tr>
-
-              <!-- 2 -->
-
-              <tr class="h-[100px] border-b">
-                <td class="text-center align-middle">&#8470; 1232</td>
-                <td class="mx-auto text-center">20/05/2023</td>
-                <td class="text-center align-middle">&#36;3200</td>
-
-                <td class="mx-auto text-center">
-                  <span
-                    class="border-2 border-orange-500 py-1 px-3 text-orange-500"
-                    >In Progress</span
-                  >
-                </td>
-                <td class="text-center align-middle">
-                  <a href="order-overview.php" class="bg-amber-400 px-4 py-2"
-                    ><button class="text-center">View</button></a
-                  >
-                </td>
-              </tr>
-
-              <!-- 3 -->
-
-              <tr class="h-[100px] border-b">
-                <td class="text-center align-middle">&#8470; 3246</td>
-                <td class="mx-auto text-center">03/03/2022</td>
-                <td class="text-center align-middle">&#36;2500</td>
-
-                <td class="mx-auto text-center">
-                  <span class="border-2 border-red-500 py-1 px-3 text-red-500"
-                    >Declined</span
-                  >
-                </td>
-                <td class="text-center align-middle">
-                  <a href="order-overview.php" class="bg-amber-400 px-4 py-2"
-                    ><button class="text-center">View</button></a
-                  >
-                </td>
-              </tr>
-
-              <!-- 4 -->
-
-              <tr class="h-[100px] border-b">
-                <td class="text-center align-middle">&#8470; 9827</td>
-                <td class="mx-auto text-center">31/01/2020</td>
-                <td class="text-center align-middle">&#36;1700</td>
-
-                <td class="mx-auto text-center">
-                  <span class="border-2 border-blue-500 py-1 px-3 text-blue-500"
-                    >Need Payment</span
-                  >
-                </td>
-                <td class="text-center align-middle">
-                  <a href="order-overview.php" class="bg-amber-400 px-4 py-2"
-                    ><button class="text-center">View</button></a
+                    ><button class="text-center" value="order_id">View</button></a
                   >
                 </td>
               </tr>

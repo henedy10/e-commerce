@@ -827,6 +827,7 @@ if(isset($_POST['log_out'])){
           <div class="">
             <div class="border py-5 shadow-md">
               <div class="flex justify-between px-4 pb-5">
+                <?php if(isset($checkemail)){ ?>
                 <p class="font-bold">Personal Profile</p>
                 <a
                   class="text-sm text-violet-900"
@@ -834,20 +835,11 @@ if(isset($_POST['log_out'])){
                   >Edit</a
                 >
               </div>
-              <?php if($checkemail!=null){ ?>
                 <div class="px-4">
                   <p><?php echo $row['first_name']." ".$row['last_name'] ?></p>
                   <p><?php echo $row['email'] ?></p>
                   <p><?php echo $row['zip_code'] ?></p>
                 </div>
-                <?php }else{ ?>
-                  <div class="px-4">
-                    <p class="font-bold text-red-600">
-                      oh no,there is no info about you <br>
-                      you should log in first or creat an account
-                    </p>
-                  </div>
-                <?php } ?>
             </div>
           </div>
 
@@ -859,20 +851,11 @@ if(isset($_POST['log_out'])){
                   >Edit</a
                 >
               </div>
-              <?php if($checkemail!=null){ ?>
               <div class="px-4">
                 <p><?php echo $row['first_name']." ".$row['last_name'] ?></p>
                 <p><?php echo $row['country'].",".$row['city'] ?></p>
                 <p><?php echo $row['zip_code'] ?></p>
               </div>
-              <?php }else{ ?>
-                <div class="px-4">
-                    <p class="font-bold text-red-600">
-                      oh no,there is no info about you <br>
-                      you should log in first or creat an account
-                    </p>
-                </div>
-              <?php } ?>
             </div>
           </div>
 
@@ -882,22 +865,22 @@ if(isset($_POST['log_out'])){
                 <p class="font-bold">Billing Address</p>
                 <!-- <a class="text-sm text-violet-900" href="#">Edit</a> -->
               </div>
-              <?php if($checkemail!=null){ ?>
               <div class="px-4">
                 <p><?php echo $row['first_name']." ".$row['last_name'] ?></p>
                 <p><?php echo $row['country'].",".$row['city'] ?></p>
                 <p><?php echo $row['zip_code'] ?></p>
               </div>
-              <?php }else{ ?>
-                <div class="px-4">
-                    <p class="font-bold text-red-600">
-                      oh no,there is no info about you <br>
-                      you should log in first or creat an account
-                    </p>
-                </div>
-              <?php } ?>
+
             </div>
           </div>
+          <?php }else{ ?>
+            <div class="px-4">
+                <p class="font-bold text-red-600">
+                   * oh no,there is no info about you <br>
+                  you should log in first or creat an account
+                </p>
+            </div>
+            <?php }?>
         </section>
       </section>
 

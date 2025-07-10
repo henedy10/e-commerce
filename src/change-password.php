@@ -3,7 +3,7 @@ $message ="";
 include "user.php";
 $user = new User();
 if(isset($_POST['update'])){
-  $message = $user ->change_password($_POST['email'],$_POST['current_pass'],$_POST['new_pass'],$_POST['repeat_new_pass']);
+  $message = $user ->change_password($_POST['email'],$_POST['new_pass'],$_POST['repeat_new_pass']);
 }
 $checkname=$user -> checkname();
 
@@ -810,22 +810,6 @@ if(isset($_POST['log_out'])){
                   value="<?php echo $user->email ?>"
                 />
               </div>
-              <div class="flex w-full flex-col">
-                <label class="flex" for="password"
-                  >Current password<span
-                    class="block text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 after:content-['*']"
-                  ></span
-                ></label>
-                <input
-                  class="w-full border px-4 py-2 lg:w-1/2"
-                  type="password"
-                  name="current_pass"
-                  id="password"
-                  placeholder="Enter Current Password"
-                  value="<?php echo $user->password   ?>"
-                />
-              </div>
-
               <div class="flex w-full flex-col">
                 <label class="flex" for="new_password"
                   >New Password<span
